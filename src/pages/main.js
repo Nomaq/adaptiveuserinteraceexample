@@ -15,6 +15,7 @@ import {
   } from "react-device-detect";
   
 var moment = require('moment');
+const $ = window.$;
 
 
 
@@ -27,7 +28,10 @@ class Main extends Component {
         this.state = {
             currentCOTab: "quickcashout",
             cashoutSet: false,
-            cashoutamount: 0
+            cashoutamount: 0,
+            accountdata:{
+
+            }
         };
     }
 
@@ -36,8 +40,14 @@ class Main extends Component {
     }
 
     loadAccountInfo() {
-        let accountdata = Account.getAccountbyUserId(1);
-        this.setState({ accountdata });
+        let context = this;
+        let accountdata = Account.getAccountbyUserId(1, function(response){
+           context.setState({ accountdata:response});
+           setTimeout(() => {
+            $( "#primero" ).trigger('click');
+           }, 500);
+        });
+        
     }
 
     gotoCOTab(route) {
@@ -48,9 +58,10 @@ class Main extends Component {
         this.setState({ cashoutSet: true });
     }
     cancelcashout() {
+        console.log(this.state);
 
         for (var property in this.state.accountdata) {
-            if (this.state.accountdata[property].id.toString() === this.state.cashoutacc.id.toString()) {
+            if (this.state.accountdata[property].idaccount.toString() === this.state.cashoutacc.idaccount.toString()) {
 
                 this.state.accountdata[property].queued = this.previousvalue;
                 this.previousvalue = 0;
@@ -65,7 +76,7 @@ class Main extends Component {
     prepareCashout(id, value) {
         for (var property in this.state.accountdata) {
             console.log(this.state.accountdata[property]);
-            if (this.state.accountdata[property].id.toString() === id.toString()) {
+            if (this.state.accountdata[property].idaccount.toString() === id.toString()) {
 
                 this.previousvalue = this.state.accountdata[property].queued;
                 this.state.accountdata[property].queued = this.state.accountdata[property].queued - value;
@@ -104,12 +115,14 @@ class Main extends Component {
                             <div className={(this.state.currentCOTab === "quickcashout" ? "tab-pane active show" : "tab-pane")} id="quickcashout">
                                 <QuickCashout
                                     gotoCOTab={this.gotoCOTab.bind(this)}
+                                    accountdata={this.state.accountdata}
                                     prepareCashout={this.prepareCashout.bind(this)}
                                     cashout={this.cashout.bind(this)} />
                             </div>
                             <div className={(this.state.currentCOTab === "denominate" ? "tab-pane active show" : "tab-pane")} id="denominateother">
                                 <DenominateOther
                                     gotoCOTab={this.gotoCOTab.bind(this)}
+                                    accountdata={this.state.accountdata}
                                     prepareCashout={this.prepareCashout.bind(this)}
 
 
@@ -118,6 +131,7 @@ class Main extends Component {
                             <div className={(this.state.currentCOTab === "cashout" ? "tab-pane active show" : "tab-pane")} id="cashout">
                                 <Cashout
                                     prepareCashout={this.prepareCashout.bind(this)}
+                                    accountdata={this.state.accountdata}
                                     gotoCOTab={this.gotoCOTab.bind(this)}
                                 />
                             </div>
@@ -130,7 +144,7 @@ class Main extends Component {
 
 
         if (this.state.cashoutSet) {
-            console.log(this.state);
+            
             prepareCashout = <div className="row">
                 <div className="col-md-12">
                     <div className="card card-nav-tabs">
@@ -144,7 +158,7 @@ class Main extends Component {
                                 <div className="tab-pane active show" id="preparedcashout">
                                     <div className="row">
                                         <div className="col-md-4" >
-                                            <h4>{this.state.cashoutacc.id}</h4>
+                                            <h4>{this.state.cashoutacc.idaccount}</h4>
                                         </div>
                                         <div className="col-md-3" >
                                             <h4>{moment().format('YYYY.mm.DD')}</h4>
@@ -165,10 +179,22 @@ class Main extends Component {
                 </div>
             </div>;
         }
-
+        let accountinfo = "Loading ..."
+        if(this.state.accountdata){
+            accountinfo = [];
+            let data = [];
+            for (let i = 0; i < this.state.accountdata.length; i++) { 
+               let div = <div key={"account" + [i+1]}
+               className={"tab-pane"} id={"account" + [i+1]}>
+                <div className="table-responsive">
+                    <AccountInfo data={this.state.accountdata[i]} /> 
+                </div>
+            </div>
+            accountinfo.push(div);
+            }
+        }
         return (
             <div className="landing-page sidebar-collapse" style={{ backgroundImage: `url(${imageUrl})` }}>
-            <BrowserView>
                 <Navbar />
                 <div className="page-header header-filter" data-parallax="true" >
                     <div className="container">
@@ -186,24 +212,24 @@ class Main extends Component {
                                         <div className="card-header card-header-primary">
                                             <div className="nav-tabs-navigation">
                                                 <div className="nav-tabs-wrapper">
-                                                    <ul className="nav nav-tabs" data-tabs="tabs">
+                                                    <ul className="nav nav-tabs" data-tabs="tabs" >
                                                         <li className="nav-item">
-                                                            <a className="nav-link active show" href="#account1" data-toggle="tab">
+                                                            <a className="nav-link" href="#account1" data-toggle="tab" id="primero">
                                                                 <i className="material-icons">account_balance</i>
                                                                 Main Account
-                                                <div className="ripple-container"></div></a>
+                                                         <div className="ripple-container"></div></a>
                                                         </li>
                                                         <li className="nav-item">
                                                             <a className="nav-link" href="#account2" data-toggle="tab">
                                                                 <i className="material-icons">monetization_on</i>
                                                                 Savings Account
-                                                <div className="ripple-container"></div></a>
+                                                        <div className="ripple-container"></div></a>
                                                         </li>
                                                         <li className="nav-item">
                                                             <a className="nav-link" href="#account3" data-toggle="tab">
                                                                 <i className="material-icons">people</i>
                                                                 Family Account
-                                                <div className="ripple-container"></div></a>
+                                                          <div className="ripple-container"></div></a>
 
                                                         </li>
                                                     </ul>
@@ -212,39 +238,19 @@ class Main extends Component {
                                         </div>
                                         <div className="card-body ">
                                             <div className="tab-content text-center">
-                                                <div className="tab-pane active show" id="account1">
-                                                    <div className="table-responsive">
-                                                        {this.state.accountdata ? < AccountInfo
-                                                            data={this.state.accountdata.acc1} /> : null}
-                                                    </div>
-                                                </div>
-                                                <div className="tab-pane" id="account2">
-                                                    <div className="table-responsive">
-                                                        {this.state.accountdata ? < AccountInfo
-                                                            data={this.state.accountdata.acc2} /> : null}
-                                                    </div>
-                                                </div>
-                                                <div className="tab-pane " id="account3">
-                                                    <div className="table-responsive">
-                                                        {this.state.accountdata ? < AccountInfo
-                                                            data={this.state.accountdata.acc3} /> : null}
-                                                    </div>
-                                                </div>
+                                               {accountinfo}
                                             </div>
                                         </div>
                                     </div>
 
                                 </div>
                             </div>
-                            {prepareCashout}
+                            {prepareCashout
+                            }
                         </div>
                     </div>
                 </div>
                 <Footer />
-                </BrowserView>
-                <MobileView>
-                    <MobileWithdraw />
-                </MobileView>
             </div>
         );
     }

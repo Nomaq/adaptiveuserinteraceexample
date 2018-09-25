@@ -7,18 +7,19 @@ class QuickCashout extends Component {
     constructor(props) {
         super(props);
         this.state = {
-
+            account: ""
         };
     }
 
     componentWillMount() {
-        this.loadAccountInfo();
+       this.loadAccountInfo();
     }
 
     loadAccountInfo(){
-        let accountdata = Account.getAccountbyUserId(1);
+        let accountdata = this.props.accountdata;
         this.setState({accountdata});
     }
+    
 
     confirm() {
         if(!this.state.selectedaccount){
@@ -35,17 +36,18 @@ class QuickCashout extends Component {
         else if ( !this.state.value){
             alert("Please select or enter an amount to withdraw")
         } else{
-            this.props.prepareCashout(this.state.selectedaccount.id,this.state.value);
+            this.props.prepareCashout(this.state.selectedaccount.idaccount,this.state.value);
         }
     }
 
     handleChange(event) {
         if(event.target.value){
-            for (var property in this.state.accountdata) {
-                console.log(this.state.accountdata[property]);
-                if (this.state.accountdata[property].id.toString() === event.target.value.toString()) {
-
-                    this.setState({account: event.target.value,selectedaccount: this.state.accountdata[property] });
+          
+            for (var property in this.props.accountdata) {
+                console.log(this.props.accountdata[property].idaccount.toString() === event.target.value.toString());
+                if (this.props.accountdata[property].idaccount.toString() === event.target.value.toString()) {
+                    console.log(this.props.accountdata[property]);
+                    this.setState({account: event.target.value,selectedaccount: this.props.accountdata[property] });
                 }
             }
             
@@ -56,18 +58,22 @@ class QuickCashout extends Component {
       }
 
     render() {
+        let loading = "Loading ...";
+        if(this.props.accountdata[0]){
+            loading = <select onChange={this.handleChange.bind(this)} value={this.state.account} id="inputState" className="form-control">
+            <option  value= {""} selected>Choose...</option>
+            <option  value={this.props.accountdata[0].idaccount}>{"Main account (Current: $" + this.props.accountdata[0].total  + ")" }</option>
+            <option  value={this.props.accountdata[1].idaccount}>{"Savings account (Current: $" + this.props.accountdata[1].total  + ")" }</option>
+            <option  value={this.props.accountdata[2].idaccount}>{"Family account (Current: $" + this.props.accountdata[2].total  + ")" }</option>
+        </select>;
+        }
 
         return (
         <form>
             <div className="form-row m-t-10">
                 <div className="form-group col-md-6">
                     <label htmlFor="inputState">Please select the account</label>
-                    <select onChange={this.handleChange.bind(this)} value={this.state.account} id="inputState" className="form-control">
-                        <option  value= {null} selected>Choose...</option>
-                        <option  value={this.state.accountdata.acc1.id}>{"Main account (Current: $" + this.state.accountdata.acc1.total  + ")" }</option>
-                        <option  value={this.state.accountdata.acc2.id}>{"Savings account (Current: $" + this.state.accountdata.acc2.total  + ")" }</option>
-                        <option  value={this.state.accountdata.acc3.id}>{"Family account (Current: $" + this.state.accountdata.acc3.total  + ")" }</option>
-                    </select>
+                    {loading}
                 </div>
                 <div className="form-group col-md-6">
                     <label htmlFor="inputState">Choose one</label>

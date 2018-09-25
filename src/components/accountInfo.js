@@ -33,7 +33,7 @@ class AccountInfo extends Component {
                     <tbody>
                         <tr>
                             <td className="td-name">
-                                <a href={"/accountdetail/"+ this.props.data.id }> {this.props.data.id}</a>
+                                <a href={"/accountdetail/"+ this.props.data.idaccount }> {this.props.data.idaccount}</a>
                             </td>
                             <td>
                                 {this.props.data.type}

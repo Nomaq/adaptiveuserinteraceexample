@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import logoImg from '../images/bandcamp-brands.gif';
-import Account from '../services/account';
-
-
-
-const imageUrl = require(`../images/bg-01.jpg`);
+import {
+    BrowserView,
+    MobileView,
+    isBrowser,
+    isMobile
+  } from "react-device-detect";
 
 class DenominateOther extends Component {
 
@@ -15,12 +15,18 @@ class DenominateOther extends Component {
             twenties: 0,
             fifties: 0,
             hundreds: 0,
-            value: 0
+            value: 0,
+            account: ""
         };
     }
 
     componentWillMount() {
-        this.loadAccountInfo();
+       this.loadAccountInfo();
+    }
+
+    loadAccountInfo(){
+        let accountdata = this.props.accountdata;
+        this.setState({accountdata});
     }
 
     componentDidUpdate(prevProps, prevState) {
@@ -33,11 +39,6 @@ class DenominateOther extends Component {
             });
         }
 
-    }
-
-    loadAccountInfo() {
-        let accountdata = Account.getAccountbyUserId(1);
-        this.setState({ accountdata });
     }
 
     confirm() {
@@ -55,7 +56,7 @@ class DenominateOther extends Component {
         else if (!this.state.value) {
             alert("Please select or enter an amount to withdraw")
         } else {
-            this.props.prepareCashout(this.state.selectedaccount.id, this.state.value);
+            this.props.prepareCashout(this.state.selectedaccount.idaccount, this.state.value);
         }
     }
 
@@ -70,132 +71,195 @@ class DenominateOther extends Component {
     }
 
     handleChange(event) {
-        if (event.target.value) {
-            for (var property in this.state.accountdata) {
-                console.log(this.state.accountdata[property]);
-                if (this.state.accountdata[property].id.toString() === event.target.value.toString()) {
-
-                    this.setState({ account: event.target.value, selectedaccount: this.state.accountdata[property] });
+        if(event.target.value){
+          
+            for (var property in this.props.accountdata) {
+                console.log(this.props.accountdata[property].idaccount.toString() === event.target.value.toString());
+                if (this.props.accountdata[property].idaccount.toString() === event.target.value.toString()) {
+                    console.log(this.props.accountdata[property]);
+                    this.setState({account: event.target.value,selectedaccount: this.props.accountdata[property] });
                 }
             }
-
-        } else {
-            this.setState({ account: event.target.value, selectedaccount: null });
+            
+        } else{
+            this.setState({account: event.target.value,selectedaccount:null });
 
         }
-    }
+      }
 
     return() {
         this.props.gotoCOTab("quickcashout");
     }
 
     render() {
+        let loading = "Loading ...";
+        if(this.props.accountdata[0]){
+            loading = <select onChange={this.handleChange.bind(this)} value={this.state.account} id="inputState" className="form-control">
+            <option  value= {""} selected>Choose...</option>
+            <option  value={this.props.accountdata[0].idaccount}>{"Main account (Current: $" + this.props.accountdata[0].total  + ")" }</option>
+            <option  value={this.props.accountdata[1].idaccount}>{"Savings account (Current: $" + this.props.accountdata[1].total  + ")" }</option>
+            <option  value={this.props.accountdata[2].idaccount}>{"Family account (Current: $" + this.props.accountdata[2].total  + ")" }</option>
+        </select>;
+        }
+        
 
         return (
             <div className="row">
-                <div className="col-md-12">
+             
+                <div className="col-12">
                     <div className="card-text">
                         <h3 className="card-title m-b-20">Other Denomination</h3>
                     </div>
                     <form>
-                        <div className="form-group col-md-12">
+                        <div className="form-group col-12">
                             <label htmlFor="inputState">Please select the account</label>
-                            <select onChange={this.handleChange.bind(this)} value={this.state.account} id="inputState" className="form-control">
-                                <option value={null} selected>Choose...</option>
-                                <option value={this.state.accountdata.acc1.id}>{"Main account (Current: $" + this.state.accountdata.acc1.total + ")"}</option>
-                                <option value={this.state.accountdata.acc2.id}>{"Savings account (Current: $" + this.state.accountdata.acc2.total + ")"}</option>
-                                <option value={this.state.accountdata.acc3.id}>{"Family account (Current: $" + this.state.accountdata.acc3.total + ")"}</option>
-                            </select>
+                            {loading}
                         </div>
+                        <BrowserView>
                         <div className="form-row m-t-10">
-                            <div className="form-group col-md-2">
+                            <div className="form-group col-2">
                                 <h3>$ 10</h3>
                             </div>
-                            <div className="col-md-1"></div>
-                            <div className="form-group col-md-2">
+                            <div className="col-1"></div>
+                            <div className="form-group col-2">
                                 <h3>$ 20</h3>
                             </div>
-                            <div className="col-md-1"></div>
-                            <div className="form-group col-md-2">
+                            <div className="col-1"></div>
+                            <div className="form-group col-2">
                                 <h3>$ 50</h3>
                             </div>
-                            <div className="col-md-1"></div>
-                            <div className="form-group col-md-2">
+                            <div className="col-1"></div>
+                            <div className="form-group col-2">
                                 <h3>$ 100</h3>
                             </div>
 
                         </div>
                         <div className="form-row">
-                            <button onClick={() => { (this.setState({ tens: (this.state.tens + 10) })) }} type="button" className="btn btn-primary btn-round col-md-2">
+                            <button onClick={() => { (this.setState({ tens: (this.state.tens + 10) })) }} type="button" className="btn btn-primary btn-round col-2">
                                 <i className="fas fa-plus"></i>
                             </button>
-                            <div className="col-md-1"></div>
-                            <button onClick={() => { (this.setState({ twenties: (this.state.twenties + 20) })) }} type="button" className="btn btn-primary btn-round col-md-2">
+                            <div className="col-1"></div>
+                            <button onClick={() => { (this.setState({ twenties: (this.state.twenties + 20) })) }} type="button" className="btn btn-primary btn-round col-2">
                                 <i className="fas fa-plus"></i>
                             </button>
-                            <div className="col-md-1"></div>
-                            <button onClick={() => { (this.setState({ fifties: (this.state.fifties + 50) })) }} type="button" className="btn btn-primary btn-round col-md-2">
+                            <div className="col-1"></div>
+                            <button onClick={() => { (this.setState({ fifties: (this.state.fifties + 50) })) }} type="button" className="btn btn-primary btn-round col-2">
                                 <i className="fas fa-plus"></i>
                             </button>
-                            <div className="col-md-1"></div>
-                            <button onClick={() => { (this.setState({ hundreds: (this.state.hundreds + 100) })) }} type="button" className="btn btn-primary btn-round col-md-2">
+                            <div className="col-1"></div>
+                            <button onClick={() => { (this.setState({ hundreds: (this.state.hundreds + 100) })) }} type="button" className="btn btn-primary btn-round col-2">
                                 <i className="fas fa-plus"></i>
                             </button>
-                            <div className="col-md-1"></div>
+                            <div className="col-1"></div>
                         </div>
                         <div className="form-row">
-                            <div className="form-group col-md-2">
+                            <div className="form-group col-2">
                                 <input type="number" value={this.state.tens} disabled={true} className="form-control" id="inputAddress" placeholder="0"></input>
                             </div>
-                            <div className="col-md-1"></div>
-                            <div className="form-group col-md-2">
+                            <div className="col-1"></div>
+                            <div className="form-group col-2">
                                 <input type="number" value={this.state.twenties} disabled={true} className="form-control" id="inputAddress" placeholder="0"></input>
                             </div>
-                            <div className="col-md-1"></div>
-                            <div className="form-group col-md-2">
+                            <div className="col-1"></div>
+                            <div className="form-group col-2">
                                 <input type="number" value={this.state.fifties} disabled={true} className="form-control" id="inputAddress" placeholder="0"></input>
                             </div>
-                            <div className="col-md-1"></div>
-                            <div className="form-group col-md-2">
+                            <div className="col-1"></div>
+                            <div className="form-group col-2">
                                 <input type="number" value={this.state.hundreds} disabled={true} className="form-control" id="inputAddress" placeholder="0"></input>
                             </div>
 
                         </div>
                         <div className="form-row">
-                            <button onClick={() => { (this.state.tens ? this.setState({ tens: (this.state.tens - 10) }) : null) }} type="button" className="btn btn-primary btn-round col-md-2">
+                            <button onClick={() => { (this.state.tens ? this.setState({ tens: (this.state.tens - 10) }) : null) }} type="button" className="btn btn-primary btn-round col-2">
                                 <i className="fas fa-minus"></i>
                             </button>
-                            <div className="col-md-1"></div>
-                            <button onClick={() => { (this.state.twenties ? this.setState({ twenties: (this.state.twenties - 20) }) : null) }} type="button" className="btn btn-primary btn-round col-md-2">
+                            <div className="col-1"></div>
+                            <button onClick={() => { (this.state.twenties ? this.setState({ twenties: (this.state.twenties - 20) }) : null) }} type="button" className="btn btn-primary btn-round col-2">
                                 <i className="fas fa-minus"></i>
                             </button>
-                            <div className="col-md-1"></div>
-                            <button onClick={() => { (this.state.fifties ? this.setState({ fifties: (this.state.fifties - 50) }) : null) }} type="button" className="btn btn-primary btn-round col-md-2">
+                            <div className="col-1"></div>
+                            <button onClick={() => { (this.state.fifties ? this.setState({ fifties: (this.state.fifties - 50) }) : null) }} type="button" className="btn btn-primary btn-round col-2">
                                 <i className="fas fa-minus"></i>
                             </button>
-                            <div className="col-md-1"></div>
-                            <button onClick={() => { (this.state.hundreds ? this.setState({ hundreds: (this.state.hundreds - 100) }) : null) }} type="button" className="btn btn-primary btn-round col-md-2">
+                            <div className="col-1"></div>
+                            <button onClick={() => { (this.state.hundreds ? this.setState({ hundreds: (this.state.hundreds - 100) }) : null) }} type="button" className="btn btn-primary btn-round col-2">
                                 <i className="fas fa-minus"></i>
                             </button>
-                            <div className="col-md-1"></div>
+                            <div className="col-1"></div>
                         </div>
+                        </BrowserView>
+                <MobileView>
+                <div className="form-row">
+                <div className="btn-group col-12" role="group" aria-label="Basic example">
+                         <button
+                         onClick={() => { (this.state.tens ? this.setState({ tens: (this.state.tens - 10) }) : null) }}
+                         type="button" className="btn btn-primary btn-round col-3"> <i className="fas fa-minus"></i></button>
+                         <div className="col-6">
+                         <h4 >{"$ 10 ("+this.state.tens+")"}</h4>
+                         </div>
+                        <button type="button" 
+                        onClick={() => { (this.setState({ tens: (this.state.tens + 10) })) }}
+                        className="btn btn-primary btn-round col-3 "> <i className="fas fa-plus"></i></button>
+                </div>
+                </div>
+                <div className="form-row">
+                <div className="btn-group col-12" role="group" aria-label="Basic example">
+                         <button 
+                         onClick={() => { (this.state.twenties ? this.setState({ twenties: (this.state.twenties - 20) }) : null) }}
+                         type="button" className="btn btn-primary btn-round col-3"> <i className="fas fa-minus"></i></button>
+                          <div className="col-6">
+                         <h4 >{"$ 20 ("+this.state.twenties+")"}</h4>
+                         </div>
+                        <button type="button" 
+                        onClick={() => { (this.setState({ twenties: (this.state.twenties + 20) })) }}
+                        className="btn btn-primary btn-round col-3 "> <i className="fas fa-plus"></i></button>
+                </div>
+                </div>
+                <div className="form-row">
+                <div className="btn-group col-12" role="group" aria-label="Basic example">
+                         <button
+                         onClick={() => { (this.state.fifties ? this.setState({ fifties: (this.state.fifties - 50) }) : null) }}
+                         type="button" className="btn btn-primary btn-round col-3"> <i className="fas fa-minus"></i></button>
+                          <div className="col-6">
+                         <h4 >{"$ 50 ("+this.state.fifties+")"}</h4>
+                         </div>
+                        <button 
+                        onClick={() => { (this.setState({ fifties: (this.state.fifties + 50) })) }}
+                        type="button" className="btn btn-primary btn-round col-3"> <i className="fas fa-plus"></i></button>
+                </div>
+                </div>
+                <div className="form-row">
+                <div className="btn-group col-12" role="group" aria-label="Basic example">
+                         <button
+                         onClick={() => { (this.state.hundreds ? this.setState({ hundreds: (this.state.hundreds - 100) }) : null) }}
+                         type="button" className="btn btn-primary btn-round col-3"> <i className="fas fa-minus"></i></button>
+                          <div className="col-6">
+                         <h4 >{"$ 100 ("+this.state.hundreds+")"}</h4>
+                         </div>
+                        <button 
+                        onClick={() => { (this.setState({ hundreds: (this.state.hundreds + 100) })) }}
+                        type="button" className="btn btn-primary btn-round col-3 "> <i className="fas fa-plus"></i></button>
+                </div>
+                </div>
+                </MobileView>
                         <div className="form-row">
-                            <div className="form-group col-md-3 ">
+                            <div className="form-group col-3 ">
                                 <h4 style={{ paddingTop: "35px" }} >Total Amount $</h4>
                             </div>
-                            <div className="form-group col-md-6">
+                            <div className="form-group col-6">
                                 <input disabled={true} value={this.state.value} onChange={(value) => { (!isNaN(value) ? this.setState({ value }) : this.setState({ value: 0 })) }} type="number" className="form-control " id="total" placeholder="0"></input>
                             </div>
                         </div>
 
                         <div className="form-row">
-                            <button onClick={this.confirm.bind(this)} type="button" className="btn btn-success btn-round col-md-2">
+                            <button onClick={this.confirm.bind(this)} type="button" className="btn btn-success btn-round col-4">
                                 Confirm
                                                   </button>
-                            <button onClick={this.reset.bind(this)} type="button" className="btn btn-info btn-round col-md-2">
+                            <button onClick={this.reset.bind(this)} type="button" className="btn btn-info btn-round col-4">
                                 Reset
                                                   </button>
-                            <button onClick={this.return.bind(this, "quickcashout")} type="button" className="btn btn-danger btn-round col-md-2">
+                            <button onClick={this.return.bind(this, "quickcashout")} type="button" className="btn btn-danger btn-round col-3">
                                 Cancel
                                                   </button>
                         </div>

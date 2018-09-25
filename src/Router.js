@@ -25,7 +25,7 @@ class RouterComponent extends Component {
     }
 
     componentWillMount() {
-    //  this.facerecognition();
+      this.facerecognition();
     }
 
 

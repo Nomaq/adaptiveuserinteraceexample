@@ -21,8 +21,11 @@ class AccountDetail extends Component {
     }
 
     loadTransactions(){
-      let data = transactions.getTransactionbyAccId(this.props.match.params.id);
-      this.setState({data});
+        let context =this;
+        transactions.getTransactionbyAccId(this.props.match.params.id, function(response){
+        context.setState({data:response});
+     
+        });      
     }
 
 
@@ -35,7 +38,7 @@ class AccountDetail extends Component {
             for (let i = 0; i < transactiondata.length; i++) { 
                 let Transaction = <tr>
                 <td>
-                {transactiondata[i].descriptions}
+                {transactiondata[i].description}
                 </td>
                 <td className="td-number">
                 {transactiondata[i].date}

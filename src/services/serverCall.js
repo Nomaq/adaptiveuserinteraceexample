@@ -1,0 +1,30 @@
+var serverAddress = "http://localhost:3005/";
+const axios = require('axios');
+
+var apiCall = {
+    serverrequest(request, body, responseFN) {
+
+        console.log(request, body);
+
+        let requestURL = serverAddress + request;
+        axios.post(
+            requestURL, 
+            body,
+            {
+               headers: {
+                Accept: 'application/json',
+               'Content-Type': 'application/json',
+               }
+            }
+        ).then(function (response) {
+            // handle success
+            responseFN(response.data);
+            
+          })
+          .catch(function (error) {
+            // handle error
+            console.log(error);
+          })
+    }
+}
+export default apiCall;
