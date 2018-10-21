@@ -15,6 +15,17 @@ class AccountDetail extends Component {
         };
     }
 
+
+    componentWillMount(){
+        var data = sessionStorage.getItem('userid');
+        if(!data){
+            this.props.history.push('/');
+           
+        } else{
+            this.setState({userid : data});
+        }
+    }
+
     componentDidMount(){
         this.loadTransactions();
         console.log(this.props);
@@ -37,16 +48,28 @@ class AccountDetail extends Component {
         if(transactiondata){
             for (let i = 0; i < transactiondata.length; i++) { 
                 let Transaction = <tr>
-                <td>
+                <td style={{
+                    color: this.props.currentUI.ColorPallete.fourthColor,
+                    fontSize: this.props.currentUI.Font.textFS,
+                    fontWeight: this.props.currentUI.Font.textFW }}>
                 {transactiondata[i].description}
                 </td>
-                <td className="td-number">
+                <td style={{
+                    color: this.props.currentUI.ColorPallete.fourthColor,
+                    fontSize: this.props.currentUI.Font.textFS,
+                    fontWeight: this.props.currentUI.Font.textFW }} className="td-number">
                 {transactiondata[i].date}
                 </td>
-                <td className="td-number">
+                <td style={{
+                    color: this.props.currentUI.ColorPallete.fourthColor,
+                    fontSize: this.props.currentUI.Font.textFS,
+                    fontWeight: this.props.currentUI.Font.textFW }} className="td-number">
                 {transactiondata[i].amount}
                 </td>
-                <td className="td-actions">
+                <td style={{
+                    color: this.props.currentUI.ColorPallete.fourthColor,
+                    fontSize: this.props.currentUI.Font.textFS,
+                    fontWeight: this.props.currentUI.Font.textFW }} className="td-actions">
                 {transactiondata[i].total}
                 </td>
             </tr>;
@@ -56,13 +79,16 @@ class AccountDetail extends Component {
 
 
         
+        let imageUrl = require('../images/bg-01.jpg');
 
-
+        if(this.props.currentUI){
+            imageUrl = require('../images/'+this.props.currentUI.Background);
+        }
+        console.log(this.props);
         return (
-
-            
             <div className="landing-page sidebar-collapse" style={{ backgroundImage: `url(${imageUrl})` }}>
-                <Navbar />
+                <Navbar 
+                history = {this.props.history}/>
                 <div className="page-header header-filter" data-parallax="true" >
                     <div className="container">
 
@@ -75,8 +101,16 @@ class AccountDetail extends Component {
                                 <div className="col-md-12">
                                     <div className="card card-nav-tabs">
                                         <div className="card-header card-header-primary row">
-                                           <span className="col-md-2"><button type="button" onClick={() => window.history.back()} className="btn btn-primary ">Return</button></span>
-                                           <span className="col-md-10"> <h3 className= "text-left" >Account 1 detail</h3></span>
+                                           <span className="col-md-2"><button type="button" style={{
+                                                                color: this.props.currentUI.ColorPallete.fifthColor,
+                                                                fontSize: this.props.currentUI.Font.headingFS,
+                                                                fontWeight: this.props.currentUI.Font.headingFW
+                                                                }} onClick={() => window.history.back()} className="btn btn-primary ">Return</button></span>
+                                           <span className="col-md-10"> <h3 style={{
+                                            color: this.props.currentUI.ColorPallete.fifthColor,
+                                            fontSize: this.props.currentUI.Font.titleFS,
+                                            fontWeight: this.props.currentUI.Font.headingFW
+                                            }} className= "text-right" >{"Account: "+this.props.match.params.id+ " detail"}</h3></span>
                                         </div>
                                         <div className="card-body ">
                                             <div className="tab-content text-center">
@@ -85,10 +119,22 @@ class AccountDetail extends Component {
                                                         <table className="table table-shopping">
                                                             <thead>
                                                                 <tr>
-                                                                    <th className="th-description">Description</th>
-                                                                    <th className="th-description">Date</th>
-                                                                    <th className="text-right">Amount</th>
-                                                                    <th className="text-right">Total</th>
+                                                                    <th style={{
+                                                                    color: this.props.currentUI.ColorPallete.firstColor,
+                                                                    fontSize: this.props.currentUI.Font.headingFS,
+                                                                    fontWeight: this.props.currentUI.Font.headingFW }} className="th-description">Description</th>
+                                                                    <th style={{
+                                                                    color: this.props.currentUI.ColorPallete.firstColor,
+                                                                    fontSize: this.props.currentUI.Font.headingFS,
+                                                                    fontWeight: this.props.currentUI.Font.headingFW }} className="th-description">Date</th>
+                                                                    <th  style={{
+                                                                    color: this.props.currentUI.ColorPallete.firstColor,
+                                                                    fontSize: this.props.currentUI.Font.headingFS,
+                                                                    fontWeight: this.props.currentUI.Font.headingFW }} className="th-description">Amount</th>
+                                                                    <th style={{
+                                                                    color: this.props.currentUI.ColorPallete.firstColor,
+                                                                    fontSize: this.props.currentUI.Font.headingFS,
+                                                                    fontWeight: this.props.currentUI.Font.headingFW }} className="th-description">Total</th>
                                                                     <th></th>
                                                                 </tr>
                                                             </thead>
@@ -107,7 +153,7 @@ class AccountDetail extends Component {
                         </div>
                     </div>
                 </div>
-                <Footer />
+                <Footer currentUI = {this.props.currentUI} />
             </div>
         );
     }

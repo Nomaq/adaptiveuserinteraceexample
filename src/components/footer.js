@@ -13,23 +13,13 @@ class Footer extends Component {
         return (
         <footer className="footer footer-default">
             <div className="container">
-                <nav className="float-left">
-                    <ul>
-                        <li>
-                            <a href="#">
-                                Account
-                          </a>
-                        </li>
-                        <li>
-                            <a href="#">
-                                Settings
-                             </a>
-                        </li>
-                    </ul>
-                </nav>
+               
                 <div className="copyright float-right">
                     &copy;
-                 <a href="#" target="_blank">Komos copyright 2019.</a>
+                 <a style={{   color: this.props.currentUI.ColorPallete.fourthColor,
+                                           fontSize: this.props.currentUI.Font.textFS,
+                                           fontWeight: this.props.currentUI.Font.textFW }}
+                                            href="#" target="_blank">Komos copyright 2019.</a>
                 </div>
             </div>
         </footer>

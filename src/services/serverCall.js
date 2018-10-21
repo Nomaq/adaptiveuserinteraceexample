@@ -22,7 +22,7 @@ var apiCall = {
             
           })
           .catch(function (error) {
-            // handle error
+            responseFN(false);
             console.log(error);
           })
     }

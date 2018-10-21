@@ -7,12 +7,15 @@ import {
 } from 'react-router-dom';
 
 import Login from './pages/login';
+import Register from './pages/register';
 import Main from './pages/main';
 import Settings from './pages/settings';
 import AccountDetail from './pages/accountdetail';
 import InitDummyData from './services/initDummyData';
 import Engine from './ruleengine/engine';
 import Emotion from './services/affectiva';
+import MobileWithdraw from './pages/mobilewithdraw';
+
 
 
 class RouterComponent extends Component {
@@ -39,7 +42,7 @@ class RouterComponent extends Component {
       }
       
       InitDummyData.initData();
-      Engine.init();
+      Engine.init(context.enableadaptation.bind(context));
       Emotion.init(function (facedetected, mood, age){
         context.user.mood = mood;
         context.user.facedetected =facedetected;
@@ -60,9 +63,11 @@ class RouterComponent extends Component {
           <Router>
           <div className="maincont">
             <Route exact path="/" render={(props) => <Login {...props} currentUI = {this.state.currentUI} />} />
-            <Route path="/main" component={Main}/>
-            <Route path="/settings" component={Settings}/>
-            <Route path="/accountdetail/:id" component={AccountDetail}/>
+            <Route path="/main" render={(props) => <Main {...props} currentUI = {this.state.currentUI} />} />
+            <Route path="/cashoutatm" render={(props) => <MobileWithdraw {...props} currentUI = {this.state.currentUI} />} />
+            <Route path="/register" render={(props) => <Register {...props} currentUI = {this.state.currentUI} />} />
+            <Route path="/settings" render={(props) => <Settings {...props} currentUI = {this.state.currentUI} />} />
+            <Route  path="/accountdetail/:id" render={(props) => <AccountDetail {...props} currentUI = {this.state.currentUI} />} />
           </div>
         </Router>
         );

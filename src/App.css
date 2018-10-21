@@ -34,3 +34,126 @@
 #affdex_elements{
   display: none;
 }
+
+input#ibritdh {
+     margin-top: 10px;
+     background-color: transparent;
+     color: white;
+}
+
+select#inputState {
+  color: #FFF;
+}
+select#inputState2 {
+  color: #FFF;
+}
+
+.register label {
+  color: white;
+  margin-top: 10px;
+}
+
+.happy .card .card-header-primary {
+  box-shadow: 0 5px 20px 0 rgba(0,0,0,.2), 0 13px 24px -11px rgba(239, 181, 21,.6);
+}
+.happy .card .card-header-primary, .card.bg-primary, .card.card-rotate.bg-primary .back, .card.card-rotate.bg-primary .front {
+  background: linear-gradient(60deg,#ffbf06,#b39f53);
+}
+
+.happy .btn.btn-primary {
+  color: #fff;
+  background-color: #F3BA11; 
+  border-color: #F3BA11;
+  box-shadow: 0 2px 2px 0 rgba(156,39,176,.14), 0 3px 1px -2px rgba(239, 181, 21,.2), 0 1px 5px 0 rgba(239, 181, 21,.12);
+}
+
+.happy .page-header {
+  height: 20vh !important;
+  background: #F3BA11; 
+  background: -webkit-linear-gradient(top#ffbf06,#b39f53);
+  background: -o-linear-gradient(top, #ffbf06,#b39f53);
+  background: -moz-linear-gradient(top, #ffbf06,#b39f53);
+  background: linear-gradient(top, #ffbf06,#b39f53);
+}
+
+.happy.wrap-login100 {
+  width: 500px;
+  border-radius: 10px;
+  overflow: hidden;
+  padding: 55px 55px 37px 55px;
+  background: #171b9c;
+  background: -webkit-linear-gradient(top#ffbf06,#b39f53);
+  background: -o-linear-gradient(top, #ffbf06,#b39f53);
+  background: -moz-linear-gradient(top, #ffbf06,#b39f53);
+  background: linear-gradient(top, #ffbf06,#b39f53);
+}
+
+.happy .login100-form-btn {
+ 
+  background: #F3BA11; 
+  background: -webkit-linear-gradient(top#ffbf06,#b39f53);
+  background: -o-linear-gradient(top, #ffbf06,#b39f53);
+  background: -moz-linear-gradient(top, #ffbf06,#b39f53);
+  background: linear-gradient(top, #ffbf06,#b39f53);
+}
+
+
+.sad .card .card-header-primary {
+  box-shadow: 0 5px 20px 0 rgba(0,0,0,.2), 0 13px 24px -11px rgba(239, 181, 21,.6);
+}
+.sad .card .card-header-primary, .card.bg-primary, .card.card-rotate.bg-primary .back, .card.card-rotate.bg-primary .front {
+  background: linear-gradient(60deg,#4596d2,#1f53a2);
+}
+
+.sad .btn.btn-primary {
+  color: #fff;
+  background-color: #1f53a2; 
+  border-color: #1f53a2;
+  box-shadow: 0 2px 2px 0 rgba(156,39,176,.14), 0 3px 1px -2px rgba(239, 181, 21,.2), 0 1px 5px 0 rgba(239, 181, 21,.12);
+}
+
+.sad .page-header {
+  height: 20vh !important;
+  background: #1f53a2; 
+  background: -webkit-linear-gradient(top#4596d2,#1f53a2);
+  background: -o-linear-gradient(top, #4596d2,#1f53a2);
+  background: -moz-linear-gradient(top, #4596d2,#1f53a2);
+  background: linear-gradient(top, #4596d2,#1f53a2);
+}
+
+.sad.wrap-login100 {
+  width: 500px;
+  border-radius: 10px;
+  overflow: hidden;
+  padding: 55px 55px 37px 55px;
+  background: #1f53a2; 
+  background: -webkit-linear-gradient(top#4596d2,#1f53a2);
+  background: -o-linear-gradient(top, #4596d2,#1f53a2);
+  background: -moz-linear-gradient(top, #4596d2,#1f53a2);
+  background: linear-gradient(top, #4596d2,#1f53a2);
+}
+
+.sad .login100-form-btn {
+ 
+  background: #1f53a2; 
+  background: -webkit-linear-gradient(top#4596d2,#1f53a2);
+  background: -o-linear-gradient(top, #4596d2,#1f53a2);
+  background: -moz-linear-gradient(top, #4596d2,#1f53a2);
+  background: linear-gradient(top, #4596d2,#1f53a2);
+}
+
+.wrap-login100 option{
+  background: #171b9c;
+}
+
+.happy .wrap-login100 option{
+  background: #F3BA11; 
+}
+
+.sad .wrap-login100 option{
+  background: #1f53a2;
+}
+
+#root{
+  font-family: "Poppins-Regular" !important;
+}

@@ -18,9 +18,6 @@ var moment = require('moment');
 const $ = window.$;
 
 
-
-const imageUrl = require(`../images/bg-01.jpg`);
-
 class Main extends Component {
 
     constructor(props) {
@@ -33,19 +30,56 @@ class Main extends Component {
 
             }
         };
+        this.loadCashoutInfo.bind(this);
+
     }
 
-    componentDidMount() {
+    componentWillMount(){
+        var data = sessionStorage.getItem('userid');
+        console.log(data);
+
+        if(!data){
+            this.props.history.push('/');
+           
+        } else{
+            this.setState({userid : data});
+        }
+    }
+
+    componentDidMount(){
         this.loadAccountInfo();
+        
     }
 
     loadAccountInfo() {
         let context = this;
         let accountdata = Account.getAccountbyUserId(1, function(response){
            context.setState({ accountdata:response});
+           context.loadCashoutInfo();
            setTimeout(() => {
             $( "#primero" ).trigger('click');
+            
            }, 500);
+        });
+        
+    }
+
+    loadCashoutInfo() {
+        let context = this;
+        Account.getCashoutbyUserId(this.state.userid, function(response){
+
+       if(response && response[0] && response[0].idcashout){
+
+        for (var property in context.state.accountdata) {
+            if (context.state.accountdata[property].idaccount.toString() === response[0].account) {
+
+                context.previousvalue = context.state.accountdata[property].queued;
+                context.state.accountdata[property].queued =context.state.accountdata[property].queued - parseFloat(response[0].amount);
+                context.setState({ cashoutSet: true, cashoutamount: response[0].amount, cashoutacc: context.state.accountdata[property], accountdata: context.state.accountdata, cashdate : response[0].date  });
+
+            }
+        }
+       }
         });
         
     }
@@ -58,36 +92,49 @@ class Main extends Component {
         this.setState({ cashoutSet: true });
     }
     cancelcashout() {
-        console.log(this.state);
+        let context= this;
 
-        for (var property in this.state.accountdata) {
-            if (this.state.accountdata[property].idaccount.toString() === this.state.cashoutacc.idaccount.toString()) {
+        Account.deletecashout(context.state.userid, function(response){
+       if(response && response){
 
-                this.state.accountdata[property].queued = this.previousvalue;
-                this.previousvalue = 0;
-                this.setState({ cashoutSet: false, cashoutamount: 0, cashoutacc: null, accountdata: this.state.accountdata  });
+        for (var property in context.state.accountdata) {
+            if (context.state.accountdata[property].idaccount.toString() === context.state.cashoutacc.idaccount.toString()) {
+
+                context.state.accountdata[property].queued = context.previousvalue;
+                context.previousvalue = 0;
+                context.setState({ cashoutSet: false, cashoutamount: 0, cashoutacc: null, accountdata: context.state.accountdata  });
 
             }
         }
+       }
+        });
+
+       
 
         
 
     }
     prepareCashout(id, value) {
-        for (var property in this.state.accountdata) {
-            console.log(this.state.accountdata[property]);
-            if (this.state.accountdata[property].idaccount.toString() === id.toString()) {
+        var context = this;
+        var date = moment().format('YYYY.mm.DD');
+        Account.preparedCashout(context.state.userid,value,id,date, function(response){
+           for (var property in context.state.accountdata) {
+            if (context.state.accountdata[property].idaccount.toString() === id.toString()) {
 
-                this.previousvalue = this.state.accountdata[property].queued;
-                this.state.accountdata[property].queued = this.state.accountdata[property].queued - value;
-                this.setState({ cashoutSet: true, cashoutamount: value, cashoutacc: this.state.accountdata[property], accountdata: this.state.accountdata });
+                context.previousvalue = context.state.accountdata[property].queued;
+                context.state.accountdata[property].queued =context.state.accountdata[property].queued - value;
+                context.setState({ cashoutSet: true, cashoutamount: value, cashoutacc: context.state.accountdata[property], accountdata: context.state.accountdata,cashdate :date  });
 
             }
         }
+         });
+
+        
     }
 
 
     render() {
+
         let prepareCashout = <div className="row">
             <div className="col-md-12">
                 <div className="card card-nav-tabs">
@@ -95,13 +142,22 @@ class Main extends Component {
                         <div className="nav-tabs-navigation">
                             <ul className="nav nav-tabs" data-tabs="tabs">
                                 <li className="nav-item">
-                                    <a onClick={this.gotoCOTab.bind(this, "quickcashout")} className="nav-link active show" href="#quickcashout" data-toggle="tab">
+                                    <a style={{
+                                            color: this.props.currentUI.ColorPallete.fifthColor,
+                                            fontSize: this.props.currentUI.Font.headingFS,
+                                            fontWeight: this.props.currentUI.Font.headingFW
+                                            }} 
+                                            onClick={this.gotoCOTab.bind(this, "quickcashout")} className="nav-link active show" href="#quickcashout" data-toggle="tab">
                                         <i className="material-icons">offline_bolt</i>
                                         Quick Cashout
                         <div className="ripple-container"></div></a>
                                 </li>
                                 <li className="nav-item">
-                                    <a onClick={this.gotoCOTab.bind(this, "cashout")} className="nav-link" href="#cashout" data-toggle="tab">
+                                    <a style={{
+                                            color: this.props.currentUI.ColorPallete.fifthColor,
+                                            fontSize: this.props.currentUI.Font.headingFS,
+                                            fontWeight: this.props.currentUI.Font.headingFW
+                                            }}  onClick={this.gotoCOTab.bind(this, "cashout")} className="nav-link" href="#cashout" data-toggle="tab">
                                         <i className="material-icons">local_atm</i>
                                         Prepare cashout
                         <div className="ripple-container"></div></a>
@@ -114,6 +170,7 @@ class Main extends Component {
                         <div className="tab-content text-center">
                             <div className={(this.state.currentCOTab === "quickcashout" ? "tab-pane active show" : "tab-pane")} id="quickcashout">
                                 <QuickCashout
+                                currentUI = {this.props.currentUI}
                                     gotoCOTab={this.gotoCOTab.bind(this)}
                                     accountdata={this.state.accountdata}
                                     prepareCashout={this.prepareCashout.bind(this)}
@@ -121,6 +178,7 @@ class Main extends Component {
                             </div>
                             <div className={(this.state.currentCOTab === "denominate" ? "tab-pane active show" : "tab-pane")} id="denominateother">
                                 <DenominateOther
+                                currentUI = {this.props.currentUI}
                                     gotoCOTab={this.gotoCOTab.bind(this)}
                                     accountdata={this.state.accountdata}
                                     prepareCashout={this.prepareCashout.bind(this)}
@@ -130,6 +188,7 @@ class Main extends Component {
                             </div>
                             <div className={(this.state.currentCOTab === "cashout" ? "tab-pane active show" : "tab-pane")} id="cashout">
                                 <Cashout
+                                currentUI = {this.props.currentUI}
                                     prepareCashout={this.prepareCashout.bind(this)}
                                     accountdata={this.state.accountdata}
                                     gotoCOTab={this.gotoCOTab.bind(this)}
@@ -142,7 +201,6 @@ class Main extends Component {
         </div>;
 
 
-
         if (this.state.cashoutSet) {
             
             prepareCashout = <div className="row">
@@ -150,27 +208,49 @@ class Main extends Component {
                     <div className="card card-nav-tabs">
                         <div className="card-header card-header-primary">
                             <div className="nav-tabs-navigation">
-                                <h3> Prepared Cashout</h3>
+                                <h3 style={{
+                                            color: this.props.currentUI.ColorPallete.fifthColor,
+                                            fontSize: this.props.currentUI.Font.titleFS,
+                                            fontWeight: this.props.currentUI.Font.headingFW
+                                            }}>  Prepared Cashout</h3>
                             </div>
                         </div>
                         <div className="card-body ">
                             <div className="tab-content text-center">
                                 <div className="tab-pane active show" id="preparedcashout">
                                     <div className="row">
-                                        <div className="col-md-4" >
-                                            <h4>{this.state.cashoutacc.idaccount}</h4>
+                                        <div style={{   color: this.props.currentUI.ColorPallete.fourthColor,
+                                           fontSize: this.props.currentUI.Font.textFS,
+                                           fontWeight: this.props.currentUI.Font.textFW }} className="col-md-4" >
+                                            {this.state.cashoutacc.idaccount}
                                         </div>
-                                        <div className="col-md-3" >
-                                            <h4>{moment().format('YYYY.mm.DD')}</h4>
+                                        <div style={{   color: this.props.currentUI.ColorPallete.fourthColor,
+                                           fontSize: this.props.currentUI.Font.textFS,
+                                           fontWeight: this.props.currentUI.Font.textFW }} className="col-md-3" >
+                                            {this.state.cashdate}
                                         </div>
-                                        <div className="col-md-3" >
-                                            <h4>{"$ " + this.state.cashoutamount}</h4>
+                                        <div style={{   color: this.props.currentUI.ColorPallete.fourthColor,
+                                           fontSize: this.props.currentUI.Font.textFS,
+                                           fontWeight: this.props.currentUI.Font.textFW }} className="col-md-3" >
+                                            {"$ " + this.state.cashoutamount}
                                         </div>
-                                        <div className="col-md-2" >
-                                            <button onClick={this.cancelcashout.bind(this)} type="button" className="btn btn-danger btn-round">
+                                        <BrowserView>
+                                        <div  >
+                                            <button onClick={this.cancelcashout.bind(this)} type="button" className="btn btn-danger btn-round ">
                                                 <i className="material-icons">cancel </i>
                                             </button>
                                         </div>
+                                        </BrowserView>
+                                        <MobileView viewClassName='col-12'>
+                                            
+                                            <button onClick={()=>this.props.history.push('/cashoutatm')}   type="button" className="btn btn-primary btn-round col-4">
+                                            <i className="material-icons">local_atm</i>
+                                            </button>
+                                            <button onClick={this.cancelcashout.bind(this)} type="button" className="btn btn-danger btn-round col-4">
+                                                <i className="material-icons">cancel </i>
+                                            </button>
+                                       
+                                        </MobileView>
                                     </div>
                                 </div>
                             </div>
@@ -187,15 +267,24 @@ class Main extends Component {
                let div = <div key={"account" + [i+1]}
                className={"tab-pane"} id={"account" + [i+1]}>
                 <div className="table-responsive">
-                    <AccountInfo data={this.state.accountdata[i]} /> 
+                    <AccountInfo currentUI = {this.props.currentUI} data={this.state.accountdata[i]} /> 
                 </div>
             </div>
             accountinfo.push(div);
             }
         }
+
+        let imageUrl = require('../images/bg-01.jpg');
+
+        if(this.props.currentUI){
+            imageUrl = require('../images/'+this.props.currentUI.Background);
+        }
         return (
             <div className="landing-page sidebar-collapse" style={{ backgroundImage: `url(${imageUrl})` }}>
-                <Navbar />
+                <Navbar
+                currentUI = {this.props.currentUI}
+                history = {this.props.history}
+                />
                 <div className="page-header header-filter" data-parallax="true" >
                     <div className="container">
 
@@ -206,7 +295,12 @@ class Main extends Component {
                         <div className="section text-center">
                             <div className="row">
                                 <div className="col-md-12">
-                                    <h3><small>Accounts</small></h3>
+
+                                    <h3 style={{
+                                            color: this.props.currentUI.ColorPallete.firstColor,
+                                            fontSize: this.props.currentUI.Font.titleFS,
+                                            fontWeight: this.props.currentUI.Font.titleFW
+                                            }}>Accounts</h3>
 
                                     <div className="card card-nav-tabs">
                                         <div className="card-header card-header-primary">
@@ -214,19 +308,31 @@ class Main extends Component {
                                                 <div className="nav-tabs-wrapper">
                                                     <ul className="nav nav-tabs" data-tabs="tabs" >
                                                         <li className="nav-item">
-                                                            <a className="nav-link" href="#account1" data-toggle="tab" id="primero">
+                                                            <a style={{
+                                                                color: this.props.currentUI.ColorPallete.fifthColor,
+                                                                fontSize: this.props.currentUI.Font.headingFS,
+                                                                fontWeight: this.props.currentUI.Font.headingFW
+                                                                }}  className="nav-link" href="#account1" data-toggle="tab" id="primero">
                                                                 <i className="material-icons">account_balance</i>
                                                                 Main Account
                                                          <div className="ripple-container"></div></a>
                                                         </li>
                                                         <li className="nav-item">
-                                                            <a className="nav-link" href="#account2" data-toggle="tab">
+                                                            <a style={{
+                                                                color: this.props.currentUI.ColorPallete.fifthColor,
+                                                                fontSize: this.props.currentUI.Font.headingFS,
+                                                                fontWeight: this.props.currentUI.Font.headingFW
+                                                                }}  className="nav-link" href="#account2" data-toggle="tab">
                                                                 <i className="material-icons">monetization_on</i>
                                                                 Savings Account
                                                         <div className="ripple-container"></div></a>
                                                         </li>
                                                         <li className="nav-item">
-                                                            <a className="nav-link" href="#account3" data-toggle="tab">
+                                                            <a style={{
+                                                                color: this.props.currentUI.ColorPallete.fifthColor,
+                                                                fontSize: this.props.currentUI.Font.headingFS,
+                                                                fontWeight: this.props.currentUI.Font.headingFW
+                                                                }}  className="nav-link" href="#account3" data-toggle="tab">
                                                                 <i className="material-icons">people</i>
                                                                 Family Account
                                                           <div className="ripple-container"></div></a>
@@ -250,7 +356,7 @@ class Main extends Component {
                         </div>
                     </div>
                 </div>
-                <Footer />
+                <Footer currentUI = {this.props.currentUI} />
             </div>
         );
     }

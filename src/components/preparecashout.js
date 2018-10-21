@@ -70,12 +70,18 @@ class DenominateOther extends Component {
         for (let i = 0; i < 4; i++) {
             let cstmDenomination = null;
             if (this.state.denominations && this.state.denominations[i]) {
-                cstmDenomination = <button onClick={() => this.setState({value:this.state.denominations[i]}) } type="button" className="btn btn-info btn-round col-2">
+                cstmDenomination = <button style={{
+                    fontSize: this.props.currentUI.Font.headingFS,
+                    fontWeight: this.props.currentUI.Font.headingFW
+                    }}  onClick={() => this.setState({value:this.state.denominations[i]}) } type="button" className="btn btn-info btn-round col-2">
                     <i className="material-icons">euro_symbol </i>
                     {this.state.denominations[i]}
                                     </button>;
             } else {
-                cstmDenomination =  <button onClick={() => this.setState({value:100}) } type="button" className="btn btn-info btn-round col-2">
+                cstmDenomination =  <button style={{
+                    fontSize: this.props.currentUI.Font.headingFS,
+                    fontWeight: this.props.currentUI.Font.headingFW
+                    }}  onClick={() => this.setState({value:100}) } type="button" className="btn btn-info btn-round col-2">
                     <i className="material-icons">euro_symbol </i>
                     100
                  </button>;
@@ -85,7 +91,9 @@ class DenominateOther extends Component {
 
         let loading = "Loading ...";
         if(this.props.accountdata[0]){
-            loading = <select onChange={this.handleChange.bind(this)} value={this.state.account} id="inputState" className="form-control">
+            loading = <select style={{   color: this.props.currentUI.ColorPallete.fourthColor,
+                fontSize: this.props.currentUI.Font.textFS,
+                fontWeight: this.props.currentUI.Font.textFW }}  onChange={this.handleChange.bind(this)} value={this.state.account} id="inputState" className="form-control">
             <option  value= {""} selected>Choose...</option>
             <option  value={this.props.accountdata[0].idaccount}>{"Main account (Current: $" + this.props.accountdata[0].total  + ")" }</option>
             <option  value={this.props.accountdata[1].idaccount}>{"Savings account (Current: $" + this.props.accountdata[1].total  + ")" }</option>
@@ -100,11 +108,19 @@ class DenominateOther extends Component {
                     </div>
                     <form>
                     <div className="form-group col-12">
-                    <label htmlFor="inputState">Please select the account</label>
+                    <label style={{
+                                            color: this.props.currentUI.ColorPallete.firstColor,
+                                            fontSize: this.props.currentUI.Font.headingFS,
+                                            fontWeight: this.props.currentUI.Font.headingFW
+                                            }} htmlFor="inputState">Please select the account</label>
                     {loading}
                 </div>
-                        <div className="form-row" id="previous">
-                            <h4>Last</h4>
+                        <div style={{
+                                            color: this.props.currentUI.ColorPallete.firstColor,
+                                            fontSize: this.props.currentUI.Font.headingFS,
+                                            fontWeight: this.props.currentUI.Font.headingFW
+                                            }} className="form-row" id="previous">
+                            Last
                         </div>
                         <div className="form-row" id="previous">
                             {cstmBtn[0]}
@@ -116,57 +132,90 @@ class DenominateOther extends Component {
                             {cstmBtn[3]}
                             <div className="col-1"></div>
                         </div>
-                        <div className="form-row" id="previous">
-                            <h4>Fix</h4>
+                        <div style={{
+                                            color: this.props.currentUI.ColorPallete.firstColor,
+                                            fontSize: this.props.currentUI.Font.headingFS,
+                                            fontWeight: this.props.currentUI.Font.headingFW
+                                            }} className="form-row" id="previous">
+                            Fix
                         </div>
                         <div className="form-row" id="previous">
 
-                            <button onClick={() => this.setState({value:20}) } type="button" className="btn btn-primary btn-round col-2">
+                            <button style={{
+                                                                fontSize: this.props.currentUI.Font.headingFS,
+                                                                fontWeight: this.props.currentUI.Font.headingFW
+                                                                }}  onClick={() => this.setState({value:20}) } type="button" className="btn btn-primary btn-round col-2">
                                 <i className="material-icons">euro_symbol </i>
                                 20
                             </button>
                             <div className="col-1"></div>
-                            <button onClick={() => this.setState({value:50}) } type="button" className="btn btn-primary btn-round col-2">
+                            <button style={{
+                                                                fontSize: this.props.currentUI.Font.headingFS,
+                                                                fontWeight: this.props.currentUI.Font.headingFW
+                                                                }}   onClick={() => this.setState({value:50}) } type="button" className="btn btn-primary btn-round col-2">
                                 <i className="material-icons">euro_symbol </i>
                                 50
                             </button>
                             <div className="col-1"></div>
-                            <button onClick={() => this.setState({value:80}) }  type="button" className="btn btn-primary btn-round col-2">
+                            <button style={{
+                                                                fontSize: this.props.currentUI.Font.headingFS,
+                                                                fontWeight: this.props.currentUI.Font.headingFW
+                                                                }}  onClick={() => this.setState({value:80}) }  type="button" className="btn btn-primary btn-round col-2">
                                 <i className="material-icons">euro_symbol </i>
                                 80
                             </button>
                             <div className="col-1"></div>
-                            <button onClick={() => this.setState({value:100}) }  type="button" className="btn btn-primary btn-round col-2">
+                            <button style={{
+                                                                fontSize: this.props.currentUI.Font.headingFS,
+                                                                fontWeight: this.props.currentUI.Font.headingFW
+                                                                }}  onClick={() => this.setState({value:100}) }  type="button" className="btn btn-primary btn-round col-2">
                                 <i className="material-icons">euro_symbol </i>
                                 100
                             </button>
                             <div className="col-1"></div>
                         </div>
                         <div className="form-row" id="previous">
-                            <button onClick={() => this.setState({value:200}) }  type="button" className="btn btn-primary btn-round col-2">
+                            <button style={{
+                                                                fontSize: this.props.currentUI.Font.headingFS,
+                                                                fontWeight: this.props.currentUI.Font.headingFW
+                                                                }}  onClick={() => this.setState({value:200}) }  type="button" className="btn btn-primary btn-round col-2">
                                 <i className="material-icons">euro_symbol </i>
                                 200
                             </button>
                             <div className="col-1"></div>
-                            <button onClick={() => this.setState({value:300}) }  type="button" className="btn btn-primary btn-round col-2">
+                            <button style={{
+                                                                fontSize: this.props.currentUI.Font.headingFS,
+                                                                fontWeight: this.props.currentUI.Font.headingFW
+                                                                }}  onClick={() => this.setState({value:300}) }  type="button" className="btn btn-primary btn-round col-2">
                                 <i className="material-icons">euro_symbol </i>
                                 300
                             </button>
                             <div className="col-1"></div>
-                            <button onClick={() => this.setState({value:400}) }  type="button" className="btn btn-primary btn-round col-2">
+                            <button style={{
+                                                                fontSize: this.props.currentUI.Font.headingFS,
+                                                                fontWeight: this.props.currentUI.Font.headingFW
+                                                                }}  onClick={() => this.setState({value:400}) }  type="button" className="btn btn-primary btn-round col-2">
                                 <i className="material-icons">euro_symbol </i>
                                 400
                             </button>
                             <div className="col-1"></div>
-                            <button onClick={() => this.setState({value:500}) }  type="button" className="btn btn-primary btn-round col-2">
+                            <button style={{
+                                                                fontSize: this.props.currentUI.Font.headingFS,
+                                                                fontWeight: this.props.currentUI.Font.headingFW
+                                                                }}  onClick={() => this.setState({value:500}) }  type="button" className="btn btn-primary btn-round col-2">
                                 <i className="material-icons">euro_symbol </i>
                                 500
                             </button>
                             <div className="col-1"></div>
                         </div>
                         <div className="form-row">
-                            <div className="form-group col-3 ">
-                                <h4 style={{ paddingTop: "35px" }} >Amount</h4>
+                            <div style={{
+                                            color: this.props.currentUI.ColorPallete.firstColor,
+                                            fontSize: this.props.currentUI.Font.headingFS,
+                                            fontWeight: this.props.currentUI.Font.headingFW,
+                                            paddingTop: "35px"
+                                            }} className="form-group col-3 ">
+                                Amount
                             </div>
                             <div className="form-group col-6">
                                 <input value={this.state.value} onChange={(value) => {(!isNaN(value) ? this.setState({value}) : this.setState({value:0}))} } type="number" className="form-control " id="total" placeholder="0"></input>
@@ -174,13 +223,22 @@ class DenominateOther extends Component {
                         </div>
 
                         <div className="form-row">
-                            <button onClick={this.confirm.bind(this)} type="button" className="btn btn-success btn-round col-3">
+                            <button style={{
+                                                                fontSize: this.props.currentUI.Font.headingFS,
+                                                                fontWeight: this.props.currentUI.Font.headingFW
+                                                                }}  onClick={this.confirm.bind(this)} type="button" className="btn btn-success btn-round col-3">
                                 Confirm
                             </button>
-                            <button onClick={this.return.bind(this, "denominate")} type="button" className="btn btn-info btn-round col-6">
+                            <button style={{
+                                                                fontSize: this.props.currentUI.Font.headingFS,
+                                                                fontWeight: this.props.currentUI.Font.headingFW
+                                                                }}  onClick={this.return.bind(this, "denominate")} type="button" className="btn btn-info btn-round col-6">
                                 Denominate other amount
                             </button>
-                            <button onClick={this.return.bind(this, "quickcashout")} type="button" className="btn btn-danger btn-round col-2">
+                            <button style={{
+                                                                fontSize: this.props.currentUI.Font.headingFS,
+                                                                fontWeight: this.props.currentUI.Font.headingFW
+                                                                }}  onClick={this.return.bind(this, "quickcashout")} type="button" className="btn btn-danger btn-round col-2">
                                 Cancel
                             </button>
                         </div>

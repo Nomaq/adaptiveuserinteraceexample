@@ -94,7 +94,9 @@ class DenominateOther extends Component {
     render() {
         let loading = "Loading ...";
         if(this.props.accountdata[0]){
-            loading = <select onChange={this.handleChange.bind(this)} value={this.state.account} id="inputState" className="form-control">
+            loading = <select style={{   color: this.props.currentUI.ColorPallete.fourthColor,
+                fontSize: this.props.currentUI.Font.textFS,
+                fontWeight: this.props.currentUI.Font.textFW }}  onChange={this.handleChange.bind(this)} value={this.state.account} id="inputState" className="form-control">
             <option  value= {""} selected>Choose...</option>
             <option  value={this.props.accountdata[0].idaccount}>{"Main account (Current: $" + this.props.accountdata[0].total  + ")" }</option>
             <option  value={this.props.accountdata[1].idaccount}>{"Savings account (Current: $" + this.props.accountdata[1].total  + ")" }</option>
@@ -108,29 +110,49 @@ class DenominateOther extends Component {
              
                 <div className="col-12">
                     <div className="card-text">
-                        <h3 className="card-title m-b-20">Other Denomination</h3>
+                        <h3  style={{
+                                            color: this.props.currentUI.ColorPallete.firstColor,
+                                            fontSize: this.props.currentUI.Font.titleFS,
+                                            fontWeight: this.props.currentUI.Font.titleFW
+                                            }} className="card-title m-b-20">Other Denomination</h3>
                     </div>
                     <form>
                         <div className="form-group col-12">
-                            <label htmlFor="inputState">Please select the account</label>
+                            <label style={{
+                                            color: this.props.currentUI.ColorPallete.firstColor,
+                                            fontSize: this.props.currentUI.Font.headingFS,
+                                            fontWeight: this.props.currentUI.Font.headingFW
+                                            }} htmlFor="inputState">Please select the account</label>
                             {loading}
                         </div>
                         <BrowserView>
                         <div className="form-row m-t-10">
                             <div className="form-group col-2">
-                                <h3>$ 10</h3>
+                                <h3 style={{
+                                            color: this.props.currentUI.ColorPallete.firstColor,
+                                           
+                                            }}>$ 10</h3>
                             </div>
                             <div className="col-1"></div>
                             <div className="form-group col-2">
-                                <h3>$ 20</h3>
+                                <h3 style={{
+                                            color: this.props.currentUI.ColorPallete.firstColor,
+                                           
+                                            }}>$ 20</h3>
                             </div>
                             <div className="col-1"></div>
                             <div className="form-group col-2">
-                                <h3>$ 50</h3>
+                                <h3 style={{
+                                            color: this.props.currentUI.ColorPallete.firstColor,
+                                           
+                                            }}>$ 50</h3>
                             </div>
                             <div className="col-1"></div>
                             <div className="form-group col-2">
-                                <h3>$ 100</h3>
+                                <h3 style={{
+                                            color: this.props.currentUI.ColorPallete.firstColor,
+                                           
+                                            }}>$ 100</h3>
                             </div>
 
                         </div>
@@ -154,19 +176,27 @@ class DenominateOther extends Component {
                         </div>
                         <div className="form-row">
                             <div className="form-group col-2">
-                                <input type="number" value={this.state.tens} disabled={true} className="form-control" id="inputAddress" placeholder="0"></input>
+                                <input style={{   color: this.props.currentUI.ColorPallete.fourthColor,
+                                           fontSize: this.props.currentUI.Font.textFS,
+                                           fontWeight: this.props.currentUI.Font.textFW }} type="number" value={this.state.tens} disabled={true} className="form-control" id="inputAddress" placeholder="0"></input>
                             </div>
                             <div className="col-1"></div>
                             <div className="form-group col-2">
-                                <input type="number" value={this.state.twenties} disabled={true} className="form-control" id="inputAddress" placeholder="0"></input>
+                                <input style={{   color: this.props.currentUI.ColorPallete.fourthColor,
+                                           fontSize: this.props.currentUI.Font.textFS,
+                                           fontWeight: this.props.currentUI.Font.textFW }} type="number" value={this.state.twenties} disabled={true} className="form-control" id="inputAddress" placeholder="0"></input>
                             </div>
                             <div className="col-1"></div>
                             <div className="form-group col-2">
-                                <input type="number" value={this.state.fifties} disabled={true} className="form-control" id="inputAddress" placeholder="0"></input>
+                                <input type="number" style={{   color: this.props.currentUI.ColorPallete.fourthColor,
+                                           fontSize: this.props.currentUI.Font.textFS,
+                                           fontWeight: this.props.currentUI.Font.textFW }}  value={this.state.fifties} disabled={true} className="form-control" id="inputAddress" placeholder="0"></input>
                             </div>
                             <div className="col-1"></div>
                             <div className="form-group col-2">
-                                <input type="number" value={this.state.hundreds} disabled={true} className="form-control" id="inputAddress" placeholder="0"></input>
+                                <input type="number" style={{   color: this.props.currentUI.ColorPallete.fourthColor,
+                                           fontSize: this.props.currentUI.Font.textFS,
+                                           fontWeight: this.props.currentUI.Font.textFW }} value={this.state.hundreds} disabled={true} className="form-control" id="inputAddress" placeholder="0"></input>
                             </div>
 
                         </div>
@@ -196,7 +226,11 @@ class DenominateOther extends Component {
                          onClick={() => { (this.state.tens ? this.setState({ tens: (this.state.tens - 10) }) : null) }}
                          type="button" className="btn btn-primary btn-round col-3"> <i className="fas fa-minus"></i></button>
                          <div className="col-6">
-                         <h4 >{"$ 10 ("+this.state.tens+")"}</h4>
+                         <h4  style={{
+                                            color: this.props.currentUI.ColorPallete.firstColor,
+                                            fontSize: this.props.currentUI.Font.titleFS,
+                                            fontWeight: this.props.currentUI.Font.titleFW
+                                            }}  >{"$ 10 ("+this.state.tens+")"}</h4>
                          </div>
                         <button type="button" 
                         onClick={() => { (this.setState({ tens: (this.state.tens + 10) })) }}
@@ -209,7 +243,11 @@ class DenominateOther extends Component {
                          onClick={() => { (this.state.twenties ? this.setState({ twenties: (this.state.twenties - 20) }) : null) }}
                          type="button" className="btn btn-primary btn-round col-3"> <i className="fas fa-minus"></i></button>
                           <div className="col-6">
-                         <h4 >{"$ 20 ("+this.state.twenties+")"}</h4>
+                         <h4  style={{
+                                            color: this.props.currentUI.ColorPallete.firstColor,
+                                            fontSize: this.props.currentUI.Font.titleFS,
+                                            fontWeight: this.props.currentUI.Font.titleFW
+                                            }}  >{"$ 20 ("+this.state.twenties+")"}</h4>
                          </div>
                         <button type="button" 
                         onClick={() => { (this.setState({ twenties: (this.state.twenties + 20) })) }}
@@ -222,7 +260,11 @@ class DenominateOther extends Component {
                          onClick={() => { (this.state.fifties ? this.setState({ fifties: (this.state.fifties - 50) }) : null) }}
                          type="button" className="btn btn-primary btn-round col-3"> <i className="fas fa-minus"></i></button>
                           <div className="col-6">
-                         <h4 >{"$ 50 ("+this.state.fifties+")"}</h4>
+                         <h4  style={{
+                                            color: this.props.currentUI.ColorPallete.firstColor,
+                                            fontSize: this.props.currentUI.Font.titleFS,
+                                            fontWeight: this.props.currentUI.Font.titleFW
+                                            }}  >{"$ 50 ("+this.state.fifties+")"}</h4>
                          </div>
                         <button 
                         onClick={() => { (this.setState({ fifties: (this.state.fifties + 50) })) }}
@@ -235,7 +277,11 @@ class DenominateOther extends Component {
                          onClick={() => { (this.state.hundreds ? this.setState({ hundreds: (this.state.hundreds - 100) }) : null) }}
                          type="button" className="btn btn-primary btn-round col-3"> <i className="fas fa-minus"></i></button>
                           <div className="col-6">
-                         <h4 >{"$ 100 ("+this.state.hundreds+")"}</h4>
+                         <h4  style={{
+                                            color: this.props.currentUI.ColorPallete.firstColor,
+                                            fontSize: this.props.currentUI.Font.titleFS,
+                                            fontWeight: this.props.currentUI.Font.titleFW
+                                            }}  >{"$ 100 ("+this.state.hundreds+")"}</h4>
                          </div>
                         <button 
                         onClick={() => { (this.setState({ hundreds: (this.state.hundreds + 100) })) }}
@@ -245,7 +291,12 @@ class DenominateOther extends Component {
                 </MobileView>
                         <div className="form-row">
                             <div className="form-group col-3 ">
-                                <h4 style={{ paddingTop: "35px" }} >Total Amount $</h4>
+                                <h4  style={{
+                                            color: this.props.currentUI.ColorPallete.firstColor,
+                                            fontSize: this.props.currentUI.Font.headingFS,
+                                            fontWeight: this.props.currentUI.Font.headingFW,
+                                            paddingTop: "35px"
+                                            }} >Total Amount $</h4>
                             </div>
                             <div className="form-group col-6">
                                 <input disabled={true} value={this.state.value} onChange={(value) => { (!isNaN(value) ? this.setState({ value }) : this.setState({ value: 0 })) }} type="number" className="form-control " id="total" placeholder="0"></input>
@@ -253,13 +304,25 @@ class DenominateOther extends Component {
                         </div>
 
                         <div className="form-row">
-                            <button onClick={this.confirm.bind(this)} type="button" className="btn btn-success btn-round col-4">
+                            <button style={{
+                                                                color: this.props.currentUI.ColorPallete.fifthColor,
+                                                                fontSize: this.props.currentUI.Font.headingFS,
+                                                                fontWeight: this.props.currentUI.Font.headingFW
+                                                                }}  onClick={this.confirm.bind(this)} type="button" className="btn btn-success btn-round col-4">
                                 Confirm
                                                   </button>
-                            <button onClick={this.reset.bind(this)} type="button" className="btn btn-info btn-round col-4">
+                            <button style={{
+                                                                color: this.props.currentUI.ColorPallete.fifthColor,
+                                                                fontSize: this.props.currentUI.Font.headingFS,
+                                                                fontWeight: this.props.currentUI.Font.headingFW
+                                                                }}  onClick={this.reset.bind(this)} type="button" className="btn btn-info btn-round col-4">
                                 Reset
                                                   </button>
-                            <button onClick={this.return.bind(this, "quickcashout")} type="button" className="btn btn-danger btn-round col-3">
+                            <button style={{
+                                                                color: this.props.currentUI.ColorPallete.fifthColor,
+                                                                fontSize: this.props.currentUI.Font.headingFS,
+                                                                fontWeight: this.props.currentUI.Font.headingFW
+                                                                }}  onClick={this.return.bind(this, "quickcashout")} type="button" className="btn btn-danger btn-round col-3">
                                 Cancel
                                                   </button>
                         </div>

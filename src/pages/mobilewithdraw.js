@@ -15,7 +15,14 @@ class Login extends Component {
         };
     }
 
-    componentDidMount() {
+    componentWillMount(){
+        var data = sessionStorage.getItem('userid');
+        if(!data){
+            this.props.history.push('/');
+           
+        } else{
+            this.setState({userid : data});
+        }
     }
 
     render() {
@@ -43,10 +50,13 @@ class Login extends Component {
 
 
         return (
-            <div className="limiter">
+            <div className="limiter" style={{textAlign: "center"}}>
                 <div className="container-login100" style={{ backgroundImage: `url(${instruction})` }}>
                     {form}
                 </div>
+                <button onClick={() => this.props.history.push('/')} type="button" className="btn btn-danger btn-round ">
+                <i className="material-icons">cancel </i>
+                </button>
             </div>
         );
     }

@@ -2,12 +2,18 @@ import User from './DataClasses/User';
 import Platform from './DataClasses/Platform';
 import Context from './DataClasses/Context';
 import ComponentAdaptations from './Adaptations/adaptations';
+const $ = window.$;
 
 var nools = require("nools");
 
 
 var currentUI = {
-   Background : ComponentAdaptations.Background.neutral
+   Background : ComponentAdaptations.Background.neutral,
+   NavBar: ComponentAdaptations.NavBar.normal,
+   ColorPallete: ComponentAdaptations.ColorPallete.normal,
+   Navigation: ComponentAdaptations.Navigation.normal,
+   Information: ComponentAdaptations.Information.normal,
+   Font: ComponentAdaptations.Font.normal,
 };
 
 var Rules = {
@@ -19,14 +25,27 @@ var Rules = {
     },
     rule3:{
         activated:false
-    }
+    },
+    rule13:{
+        activated:false
+    },
+    rule14:{
+        activated:false
+    },
+    rule15:{
+        activated:false
+    },
+    rule16:{
+        activated:false
+    },
 }
 
 
 var RuleEngine = {
-    init: function () {
+    init: function (enableadaptation) {
 
         var context = this;
+        enableadaptation(currentUI);
 
         if (!nools.hasFlow("MainFlow")){
 
@@ -37,23 +56,59 @@ var RuleEngine = {
                     console.log("good");
                     currentUI.Background = ComponentAdaptations.Background.happy; 
                     Rules.rule1.activated = true ;
+                    $( "#root" ).addClass( "happy" );
                 });
 
-                flow.rule("Rule1: User Neutral", { salience: 9 }, [User, "m", "m.mood == 2"], function (facts) {
+                flow.rule("Rule2: User Neutral", { salience: 9 }, [User, "m", "m.mood == 2"], function (facts) {
                     
                     console.log("neutral");
                      currentUI.Background =ComponentAdaptations.Background.neutral;
                      Rules.rule2.activated = true ;
+                     $( "#root" ).removeClass( "happy" );
+                     $( "#root" ).removeClass( "sad" );
         
                 });
 
-                flow.rule("Rule1: User Bad mood", { salience: 9 }, [User, "m", "m.mood == 1 || m.mood == 3"], function (facts) {
+                flow.rule("Rule3: User Bad mood", { salience: 9 }, [User, "m", "m.mood == 1 || m.mood == 3"], function (facts) {
                     
                     console.log("down");
                     currentUI.Background =ComponentAdaptations.Background.sad;
                     Rules.rule3.activated = true ;
+                    $( "#root" ).addClass( "sad" );
         
                 });
+
+                flow.rule("Rule 13 : Impaired vision", { salience: 10 }, [User, "m", "m.reducedvision == true"], function (facts) {
+                    console.log(13);
+                    //console.log("Older User");
+                    global.currentUI.Font = ComponentAdaptations.Font.bigger;
+                    Rules.rule13.activated = true;
+                });
+
+                flow.rule("Rule14 : Middle aged user", { salience: 3 }, [User, "m", "m.age >= 45 &&  m.age <= 60"], function (facts) {
+                    console.log(14);
+                    //console.log("Older User");
+                    global.currentUI.Font = ComponentAdaptations.Font.big;
+                    Rules.rule14.activated = true;
+                });
+
+                flow.rule("Rule15 : Older User", { salience: 10 }, [User, "m", "m.age > 60 && m.experience !== 'high'"], function (facts) {
+                    console.log(15);
+                    //console.log("Older User");
+                    global.currentUI.Font = ComponentAdaptations.Font.bigger;
+                    Rules.rule15.activated = true;
+
+                });
+
+                this.rule("Rule16: Younger User", { salience: 10 }, [User, "m", "m.age < 45 && !(m.experience == 'low' || m.experience == 'none')"], function (facts) { 
+                    if(!Rules.rule13){
+
+                        global.currentUI.Font = ComponentAdaptations.Font.normal;
+                        Rules.rule16.activated = true ;
+                        
+                    }
+                });
+
                 
             });
         }

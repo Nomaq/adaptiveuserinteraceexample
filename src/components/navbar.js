@@ -8,6 +8,10 @@ class Navbar extends Component {
         };
     }
 
+    logOut(){
+        sessionStorage.removeItem('userid');
+        this.props.history.push('/');
+    }
 
     render() {
         return (
@@ -34,6 +38,11 @@ class Navbar extends Component {
                                 <li className="nav-item">
                                     <a className="nav-link" href="/settings" >
                                         <i className="material-icons">settings</i> Settings
+                                     </a>
+                                </li>
+                                <li className="nav-item">
+                                    <a className="nav-link" onClick={()=>this.logOut()} >
+                                        <i className="material-icons">power_settings_new</i> Logout
                                      </a>
                                 </li>
                             </ul>

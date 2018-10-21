@@ -22,32 +22,59 @@ class AccountInfo extends Component {
                     <thead>
                         <tr>
                             <th className="text-center"></th>
-                            <th>Type</th>
-                            <th className="th-description">this</th>
-                            <th className="th-description">Status</th>
-                            <th className="text-right">Ammount include queued</th>
-                            <th className="text-right">Amount</th>
+                            <th style={{
+                                                                    color: this.props.currentUI.ColorPallete.firstColor,
+                                                                    fontSize: this.props.currentUI.Font.headingFS,
+                                                                    fontWeight: this.props.currentUI.Font.headingFW }}>Type</th>
+                            <th style={{
+                                                                    color: this.props.currentUI.ColorPallete.firstColor,
+                                                                    fontSize: this.props.currentUI.Font.headingFS,
+                                                                    fontWeight: this.props.currentUI.Font.headingFW }} className="th-description">this</th>
+                            <th style={{
+                                                                    color: this.props.currentUI.ColorPallete.firstColor,
+                                                                    fontSize: this.props.currentUI.Font.headingFS,
+                                                                    fontWeight: this.props.currentUI.Font.headingFW }} className="th-description">Status</th>
+                            <th style={{
+                                                                    color: this.props.currentUI.ColorPallete.firstColor,
+                                                                    fontSize: this.props.currentUI.Font.headingFS,
+                                                                    fontWeight: this.props.currentUI.Font.headingFW }} className="text-right">Ammount include queued</th>
+                            <th style={{
+                                                                    color: this.props.currentUI.ColorPallete.firstColor,
+                                                                    fontSize: this.props.currentUI.Font.headingFS,
+                                                                    fontWeight: this.props.currentUI.Font.headingFW }} className="text-right">Amount</th>
                             <th></th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
                             <td className="td-name">
-                                <a href={"/accountdetail/"+ this.props.data.idaccount }> {this.props.data.idaccount}</a>
+                                <a style={{   color: this.props.currentUI.ColorPallete.fourthColor,
+                                           fontSize: this.props.currentUI.Font.textFS,
+                                           fontWeight: this.props.currentUI.Font.textFW }} href={"/accountdetail/"+ this.props.data.idaccount }> {this.props.data.idaccount}</a>
                             </td>
-                            <td>
+                            <td style={{   color: this.props.currentUI.ColorPallete.fourthColor,
+                                           fontSize: this.props.currentUI.Font.textFS,
+                                           fontWeight: this.props.currentUI.Font.textFW }}>
                                 {this.props.data.type}
                              </td>
-                            <td>
+                            <td style={{   color: this.props.currentUI.ColorPallete.fourthColor,
+                                           fontSize: this.props.currentUI.Font.textFS,
+                                           fontWeight: this.props.currentUI.Font.textFW }}>
                             {this.props.data.currency}
                             </td>
-                            <td className="td-number">
+                            <td style={{   color: this.props.currentUI.ColorPallete.fourthColor,
+                                           fontSize: this.props.currentUI.Font.textFS,
+                                           fontWeight: this.props.currentUI.Font.textFW }} className="td-number">
                             {this.props.data.status}
                               </td>
-                            <td className="td-number">
+                            <td style={{   color: this.props.currentUI.ColorPallete.fourthColor,
+                                           fontSize: this.props.currentUI.Font.textFS,
+                                           fontWeight: this.props.currentUI.Font.textFW }} className="td-number">
                             {this.props.data.queued}
                             </td>
-                            <td className="td-actions">
+                            <td style={{   color: this.props.currentUI.ColorPallete.fourthColor,
+                                           fontSize: this.props.currentUI.Font.textFS,
+                                           fontWeight: this.props.currentUI.Font.textFW }} className="td-actions">
                             {this.props.data.total}
                             </td>
                         </tr>
