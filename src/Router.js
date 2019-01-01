@@ -107,14 +107,12 @@ class RouterComponent extends Component {
       let environment = JSON.parse(JSON.stringify(context.state.environment));
       let d = new Date();
       let n = d.getHours();
-      environment.time = 21;
       context.setState({environment});
       Engine.contextChange(environment, context.enableadaptation.bind(context));
       setInterval(function(){ 
         let environment = JSON.parse(JSON.stringify(context.state.environment));
         let d = new Date();
         let n = d.getHours();
-        environment.time = 21;
         context.setState({environment});
         Engine.contextChange(environment, context.enableadaptation.bind(context));
        }, 60000);
