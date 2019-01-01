@@ -24,6 +24,20 @@ let Account = {
         });
         serverCall.serverrequest("account/getcashoutbyid",body,responseFN);
     },
+    getCashouts(iduser,responseFN){
+        
+        let body = JSON.stringify({
+            iduser: iduser,
+        });
+        serverCall.serverrequest("account/getcashouts",body,responseFN);
+    },
+    doCashouts(ids,responseFN){
+        
+        let body = JSON.stringify({
+            id: ids,
+        });
+        serverCall.serverrequest("account/docashouts",body,responseFN);
+    },
     deletecashout(iduser,responseFN){
         let body = JSON.stringify({
             iduser: iduser,

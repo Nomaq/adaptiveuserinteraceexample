@@ -94,13 +94,26 @@ class DenominateOther extends Component {
     render() {
         let loading = "Loading ...";
         if(this.props.accountdata[0]){
-            loading = <select style={{   color: this.props.currentUI.ColorPallete.fourthColor,
+            loading = <select style={{   color: this.props.currentUI.ColorPallete.secondColor,
                 fontSize: this.props.currentUI.Font.textFS,
                 fontWeight: this.props.currentUI.Font.textFW }}  onChange={this.handleChange.bind(this)} value={this.state.account} id="inputState" className="form-control">
-            <option  value= {""} selected>Choose...</option>
-            <option  value={this.props.accountdata[0].idaccount}>{"Main account (Current: $" + this.props.accountdata[0].total  + ")" }</option>
-            <option  value={this.props.accountdata[1].idaccount}>{"Savings account (Current: $" + this.props.accountdata[1].total  + ")" }</option>
-            <option  value={this.props.accountdata[2].idaccount}>{"Family account (Current: $" + this.props.accountdata[2].total  + ")" }</option>
+            <option style={{   
+                backgroundColor: this.props.currentUI.ColorPallete.fifthColor,
+                color: this.props.currentUI.ColorPallete.secondColor,
+                fontSize: this.props.currentUI.Font.textFS,
+                fontWeight: this.props.currentUI.Font.textFW }} value= {""} selected>{this.props.currentUI.Information.showExtraInfo ? "Click here to select an account" :  "Choose..."}</option>
+            <option style={{   color: this.props.currentUI.ColorPallete.secondColor,
+                backgroundColor: this.props.currentUI.ColorPallete.fifthColor,
+                fontSize: this.props.currentUI.Font.textFS,
+                fontWeight: this.props.currentUI.Font.textFW }} value={this.props.accountdata[0].idaccount}>{"Main account (Current: $" + this.props.accountdata[0].total  + ")" }</option>
+            <option style={{   color: this.props.currentUI.ColorPallete.secondColor,
+                backgroundColor: this.props.currentUI.ColorPallete.fifthColor,
+                fontSize: this.props.currentUI.Font.textFS,
+                fontWeight: this.props.currentUI.Font.textFW }} value={this.props.accountdata[1].idaccount}>{"Savings account (Current: $" + this.props.accountdata[1].total  + ")" }</option>
+            <option style={{   color: this.props.currentUI.ColorPallete.secondColor,
+               backgroundColor: this.props.currentUI.ColorPallete.fifthColor,
+               fontSize: this.props.currentUI.Font.textFS,
+               fontWeight: this.props.currentUI.Font.textFW }} value={this.props.accountdata[2].idaccount}>{"Family account (Current: $" + this.props.accountdata[2].total  + ")" }</option>
         </select>;
         }
         
@@ -176,27 +189,35 @@ class DenominateOther extends Component {
                         </div>
                         <div className="form-row">
                             <div className="form-group col-2">
-                                <input style={{   color: this.props.currentUI.ColorPallete.fourthColor,
-                                           fontSize: this.props.currentUI.Font.textFS,
-                                           fontWeight: this.props.currentUI.Font.textFW }} type="number" value={this.state.tens} disabled={true} className="form-control" id="inputAddress" placeholder="0"></input>
+                                <input style={{
+                                            color: this.props.currentUI.ColorPallete.secondColor,
+                                            fontSize: this.props.currentUI.Font.headingFS,
+                                            fontWeight: this.props.currentUI.Font.headingFW
+                                            }}  type="number" value={this.state.tens} disabled={true} className="form-control" id="inputAddress" placeholder="0"></input>
                             </div>
                             <div className="col-1"></div>
                             <div className="form-group col-2">
-                                <input style={{   color: this.props.currentUI.ColorPallete.fourthColor,
-                                           fontSize: this.props.currentUI.Font.textFS,
-                                           fontWeight: this.props.currentUI.Font.textFW }} type="number" value={this.state.twenties} disabled={true} className="form-control" id="inputAddress" placeholder="0"></input>
+                                <input style={{
+                                            color: this.props.currentUI.ColorPallete.secondColor,
+                                            fontSize: this.props.currentUI.Font.headingFS,
+                                            fontWeight: this.props.currentUI.Font.headingFW
+                                            }} type="number" value={this.state.twenties} disabled={true} className="form-control" id="inputAddress" placeholder="0"></input>
                             </div>
                             <div className="col-1"></div>
                             <div className="form-group col-2">
-                                <input type="number" style={{   color: this.props.currentUI.ColorPallete.fourthColor,
-                                           fontSize: this.props.currentUI.Font.textFS,
-                                           fontWeight: this.props.currentUI.Font.textFW }}  value={this.state.fifties} disabled={true} className="form-control" id="inputAddress" placeholder="0"></input>
+                                <input type="number" style={{
+                                            color: this.props.currentUI.ColorPallete.secondColor,
+                                            fontSize: this.props.currentUI.Font.headingFS,
+                                            fontWeight: this.props.currentUI.Font.headingFW
+                                            }}  value={this.state.fifties} disabled={true} className="form-control" id="inputAddress" placeholder="0"></input>
                             </div>
                             <div className="col-1"></div>
                             <div className="form-group col-2">
-                                <input type="number" style={{   color: this.props.currentUI.ColorPallete.fourthColor,
-                                           fontSize: this.props.currentUI.Font.textFS,
-                                           fontWeight: this.props.currentUI.Font.textFW }} value={this.state.hundreds} disabled={true} className="form-control" id="inputAddress" placeholder="0"></input>
+                                <input type="number" style={{
+                                            color: this.props.currentUI.ColorPallete.secondColor,
+                                            fontSize: this.props.currentUI.Font.headingFS,
+                                            fontWeight: this.props.currentUI.Font.headingFW
+                                            }} value={this.state.hundreds} disabled={true} className="form-control" id="inputAddress" placeholder="0"></input>
                             </div>
 
                         </div>
@@ -299,31 +320,33 @@ class DenominateOther extends Component {
                                             }} >Total Amount $</h4>
                             </div>
                             <div className="form-group col-6">
-                                <input disabled={true} value={this.state.value} onChange={(value) => { (!isNaN(value) ? this.setState({ value }) : this.setState({ value: 0 })) }} type="number" className="form-control " id="total" placeholder="0"></input>
+                                <input style={{
+                                            color: this.props.currentUI.ColorPallete.secondColor,
+                                            fontSize: this.props.currentUI.Font.headingFS,
+                                            fontWeight: this.props.currentUI.Font.headingFW
+                                            }} disabled={true} value={this.state.value} onChange={(value) => { (!isNaN(value) ? this.setState({ value }) : this.setState({ value: 0 })) }} type="number" className="form-control " id="total" placeholder="0"></input>
                             </div>
                         </div>
 
                         <div className="form-row">
                             <button style={{
-                                                                color: this.props.currentUI.ColorPallete.fifthColor,
                                                                 fontSize: this.props.currentUI.Font.headingFS,
                                                                 fontWeight: this.props.currentUI.Font.headingFW
                                                                 }}  onClick={this.confirm.bind(this)} type="button" className="btn btn-success btn-round col-4">
                                 Confirm
+
                                                   </button>
                             <button style={{
-                                                                color: this.props.currentUI.ColorPallete.fifthColor,
                                                                 fontSize: this.props.currentUI.Font.headingFS,
                                                                 fontWeight: this.props.currentUI.Font.headingFW
                                                                 }}  onClick={this.reset.bind(this)} type="button" className="btn btn-info btn-round col-4">
                                 Reset
                                                   </button>
                             <button style={{
-                                                                color: this.props.currentUI.ColorPallete.fifthColor,
                                                                 fontSize: this.props.currentUI.Font.headingFS,
                                                                 fontWeight: this.props.currentUI.Font.headingFW
                                                                 }}  onClick={this.return.bind(this, "quickcashout")} type="button" className="btn btn-danger btn-round col-3">
-                                Cancel
+                               Cancel
                                                   </button>
                         </div>
                     </form>

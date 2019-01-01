@@ -55,9 +55,8 @@ detector.addEventListener("onImageResultsSuccess", function (faces, image, times
  else{
    faceDetected = false;
  }
-  
   if(faceDetected){
-        if(faces[0].emotions.anger>10){
+        if(faces[0].emotions.anger > 10 || faces[0].emotions.contempt > 10 || faces[0].emotions.disgust > 10 || faces[0].emotions.sadness > 10 || faces[0].emotions.surprise > 10   ){
                 mood = MoodEnum.angry;
         }else if(faces[0].emotions.joy>15){
                 mood = MoodEnum.happy;
@@ -128,6 +127,10 @@ detector.addEventListener("onWebcamConnectFailure", function() {
 
 detector.detectEmotions.joy = true;
 detector.detectEmotions.anger = true;
+detector.detectEmotions.contempt = true;
+detector.detectEmotions.disgust= true;
+detector.detectEmotions.sadness = true;
+detector.detectEmotions.surprise = true;
 detector.detectAppearance.age = true;
 
 detector.start();

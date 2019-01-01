@@ -37,9 +37,9 @@ class Login extends Component {
             setTimeout(function () {
                 console.log(response);
                 if(response && response && response.insertId ){
-                    sessionStorage.setItem('userid', response.insertId );
-                    sessionStorage.setItem('impairments', state.impairments );
-                    sessionStorage.setItem('experience', state.experience );
+                    localStorage.setItem('userid', response.insertId );
+                    localStorage.setItem('impairments', state.impairments );
+                    localStorage.setItem('experience', state.experience );
                     context.setState({ loading: false });
                     context.props.history.push('/main');
 
@@ -69,14 +69,13 @@ class Login extends Component {
             <form className="login100-form validate-form">
 
 
-                <span  style={{color: this.props.currentUI.ColorPallete.fifthColor}} className="login100-form-title p-b-34 p-t-27">
+                <span className="login100-form-title p-b-34 p-t-27">
                     Registration
             </span>
 
                
                <div className="wrap-input100 validate-input" data-validate="Enter username">
                     <input onChange={(username)=> this.setState({username:username.target.value})}  value={this.state.username} style={{
-                                                                    color: this.props.currentUI.ColorPallete.fifthColor,
                                                                     fontSize: this.props.currentUI.Font.headingFS,
                                                                     fontWeight: this.props.currentUI.Font.headingFW }}  className="input100" type="text" name="username" placeholder="Username"></input>
                     <span className="focus-input100" data-placeholder="&#xf207;"></span>
@@ -84,21 +83,18 @@ class Login extends Component {
 
                 <div className="wrap-input100 validate-input" data-validate="Enter password">
                     <input onChange={(password)=> this.setState({password:password.target.value})}  value={this.state.password} style={{
-                                                                    color: this.props.currentUI.ColorPallete.fifthColor,
                                                                     fontSize: this.props.currentUI.Font.headingFS,
                                                                     fontWeight: this.props.currentUI.Font.headingFW }} className="input100" type="password" name="pass" placeholder="Password"></input>
                     <span className="focus-input100" data-placeholder="&#xf191;"></span>
                 </div>
                 <div className="wrap-input100 validate-input" data-validate="Re-enter password">
                     <input onChange={(password)=> this.setState({repassword:password.target.value})}  value={this.state.repassword} style={{
-                                                                    color: this.props.currentUI.ColorPallete.fifthColor,
                                                                     fontSize: this.props.currentUI.Font.headingFS,
                                                                     fontWeight: this.props.currentUI.Font.headingFW }} className="input100" type="password" name="repass" placeholder="Re-enter Password"></input>
                     <span className="focus-input100" data-placeholder="&#xf191;"></span>
                 </div>
                 <div className="wrap-input100 validate-input" data-validate="Full Name">
                     <input onChange={(fullname)=> this.setState({fullname:fullname.target.value})}  value={this.state.fullname} style={{
-                                                                    color: this.props.currentUI.ColorPallete.fifthColor,
                                                                     fontSize: this.props.currentUI.Font.headingFS,
                                                                     fontWeight: this.props.currentUI.Font.headingFW }} className="input100" type="text" name="fullname" placeholder="Full Name"></input>
                     <span className="focus-input100" data-placeholder="&#xf207;"></span>
@@ -106,7 +102,6 @@ class Login extends Component {
                 <div className="form-row register">
                     <div className="form-group col-md-12">
                         <label htmlFor="inputState" style={{
-                                                                    color: this.props.currentUI.ColorPallete.fifthColor,
                                                                     fontSize: this.props.currentUI.Font.headingFS,
                                                                     fontWeight: this.props.currentUI.Font.headingFW }}>Do you have problems reading small fonts?</label>
                         <select onChange={(impairments)=> this.setState({impairments:impairments.target.value})} value={this.state.impairments} id="inputState" className="form-control">
@@ -115,7 +110,6 @@ class Login extends Component {
                             <option>Yes</option>
                         </select>
                         <label htmlFor="inputState2" style={{
-                                                                    color: this.props.currentUI.ColorPallete.fifthColor,
                                                                     fontSize: this.props.currentUI.Font.headingFS,
                                                                     fontWeight: this.props.currentUI.Font.headingFW }}>Do you have experience with other banking systems?</label>
                         <select id="inputState2" onChange={(experience)=> this.setState({experience:experience.target.value})} value={this.state.experience} className="form-control">

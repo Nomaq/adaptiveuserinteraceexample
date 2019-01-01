@@ -17,7 +17,7 @@ class AccountDetail extends Component {
 
 
     componentWillMount(){
-        var data = sessionStorage.getItem('userid');
+        var data = localStorage.getItem('userid');
         if(!data){
             this.props.history.push('/');
            
@@ -49,25 +49,25 @@ class AccountDetail extends Component {
             for (let i = 0; i < transactiondata.length; i++) { 
                 let Transaction = <tr>
                 <td style={{
-                    color: this.props.currentUI.ColorPallete.fourthColor,
+                    color: this.props.currentUI.ColorPallete.secondColor,
                     fontSize: this.props.currentUI.Font.textFS,
                     fontWeight: this.props.currentUI.Font.textFW }}>
                 {transactiondata[i].description}
                 </td>
                 <td style={{
-                    color: this.props.currentUI.ColorPallete.fourthColor,
+                    color: this.props.currentUI.ColorPallete.secondColor,
                     fontSize: this.props.currentUI.Font.textFS,
                     fontWeight: this.props.currentUI.Font.textFW }} className="td-number">
                 {transactiondata[i].date}
                 </td>
                 <td style={{
-                    color: this.props.currentUI.ColorPallete.fourthColor,
+                    color: this.props.currentUI.ColorPallete.secondColor,
                     fontSize: this.props.currentUI.Font.textFS,
                     fontWeight: this.props.currentUI.Font.textFW }} className="td-number">
                 {transactiondata[i].amount}
                 </td>
                 <td style={{
-                    color: this.props.currentUI.ColorPallete.fourthColor,
+                    color: this.props.currentUI.ColorPallete.secondColor,
                     fontSize: this.props.currentUI.Font.textFS,
                     fontWeight: this.props.currentUI.Font.textFW }} className="td-actions">
                 {transactiondata[i].total}
@@ -84,10 +84,10 @@ class AccountDetail extends Component {
         if(this.props.currentUI){
             imageUrl = require('../images/'+this.props.currentUI.Background);
         }
-        console.log(this.props);
         return (
             <div className="landing-page sidebar-collapse" style={{ backgroundImage: `url(${imageUrl})` }}>
                 <Navbar 
+                currentUI = {this.props.currentUI}
                 history = {this.props.history}/>
                 <div className="page-header header-filter" data-parallax="true" >
                     <div className="container">
@@ -102,12 +102,10 @@ class AccountDetail extends Component {
                                     <div className="card card-nav-tabs">
                                         <div className="card-header card-header-primary row">
                                            <span className="col-md-2"><button type="button" style={{
-                                                                color: this.props.currentUI.ColorPallete.fifthColor,
                                                                 fontSize: this.props.currentUI.Font.headingFS,
                                                                 fontWeight: this.props.currentUI.Font.headingFW
                                                                 }} onClick={() => window.history.back()} className="btn btn-primary ">Return</button></span>
                                            <span className="col-md-10"> <h3 style={{
-                                            color: this.props.currentUI.ColorPallete.fifthColor,
                                             fontSize: this.props.currentUI.Font.titleFS,
                                             fontWeight: this.props.currentUI.Font.headingFW
                                             }} className= "text-right" >{"Account: "+this.props.match.params.id+ " detail"}</h3></span>

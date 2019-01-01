@@ -35,7 +35,7 @@ class Main extends Component {
     }
 
     componentWillMount(){
-        var data = sessionStorage.getItem('userid');
+        var data = localStorage.getItem('userid');
         console.log(data);
 
         if(!data){
@@ -48,7 +48,16 @@ class Main extends Component {
 
     componentDidMount(){
         this.loadAccountInfo();
+        this.loadUserSettings();
         
+    }
+
+    loadUserSettings(){
+
+        let impairments = localStorage.getItem('impairments');
+        let experience = localStorage.getItem('experience');
+        experience = parseInt(experience);
+        this.props.userSettings(impairments,experience);
     }
 
     loadAccountInfo() {
@@ -149,7 +158,7 @@ class Main extends Component {
                                             }} 
                                             onClick={this.gotoCOTab.bind(this, "quickcashout")} className="nav-link active show" href="#quickcashout" data-toggle="tab">
                                         <i className="material-icons">offline_bolt</i>
-                                        Quick Cashout
+                                         {(this.props.currentUI.Information.showExtraInfo && this.props.currentUI.Information.showButtonText ) ? "Do a quick cashout" : ((!this.props.currentUI.Information.showExtraInfo && this.props.currentUI.Information.showButtonText) ? "Quick Cashout" : null )} 
                         <div className="ripple-container"></div></a>
                                 </li>
                                 <li className="nav-item">
@@ -159,7 +168,8 @@ class Main extends Component {
                                             fontWeight: this.props.currentUI.Font.headingFW
                                             }}  onClick={this.gotoCOTab.bind(this, "cashout")} className="nav-link" href="#cashout" data-toggle="tab">
                                         <i className="material-icons">local_atm</i>
-                                        Prepare cashout
+                                        {(this.props.currentUI.Information.showExtraInfo && this.props.currentUI.Information.showButtonText) ? "Prepare custom cashout" : ((!this.props.currentUI.Information.showExtraInfo && this.props.currentUI.Information.showButtonText) ? "Prepare cashout" : null )} 
+ 
                         <div className="ripple-container"></div></a>
                                 </li>
 
@@ -170,7 +180,7 @@ class Main extends Component {
                         <div className="tab-content text-center">
                             <div className={(this.state.currentCOTab === "quickcashout" ? "tab-pane active show" : "tab-pane")} id="quickcashout">
                                 <QuickCashout
-                                currentUI = {this.props.currentUI}
+                                   currentUI = {this.props.currentUI}
                                     gotoCOTab={this.gotoCOTab.bind(this)}
                                     accountdata={this.state.accountdata}
                                     prepareCashout={this.prepareCashout.bind(this)}
@@ -178,7 +188,7 @@ class Main extends Component {
                             </div>
                             <div className={(this.state.currentCOTab === "denominate" ? "tab-pane active show" : "tab-pane")} id="denominateother">
                                 <DenominateOther
-                                currentUI = {this.props.currentUI}
+                                    currentUI = {this.props.currentUI}
                                     gotoCOTab={this.gotoCOTab.bind(this)}
                                     accountdata={this.state.accountdata}
                                     prepareCashout={this.prepareCashout.bind(this)}
@@ -200,7 +210,7 @@ class Main extends Component {
             </div>
         </div>;
 
-
+                                            console.log(this.props);
         if (this.state.cashoutSet) {
             
             prepareCashout = <div className="row">
@@ -209,45 +219,47 @@ class Main extends Component {
                         <div className="card-header card-header-primary">
                             <div className="nav-tabs-navigation">
                                 <h3 style={{
-                                            color: this.props.currentUI.ColorPallete.fifthColor,
                                             fontSize: this.props.currentUI.Font.titleFS,
                                             fontWeight: this.props.currentUI.Font.headingFW
-                                            }}>  Prepared Cashout</h3>
+                                            }}>  {this.props.currentUI.Information.showExtraInfo ?   "This cashout is ready to withdraw!" : "Prepared cashout" }</h3>
                             </div>
                         </div>
                         <div className="card-body ">
                             <div className="tab-content text-center">
                                 <div className="tab-pane active show" id="preparedcashout">
                                     <div className="row">
-                                        <div style={{   color: this.props.currentUI.ColorPallete.fourthColor,
+                                        <div style={{   color: this.props.currentUI.ColorPallete.secondColor,
                                            fontSize: this.props.currentUI.Font.textFS,
-                                           fontWeight: this.props.currentUI.Font.textFW }} className="col-md-4" >
+                                           fontWeight: this.props.currentUI.Font.textFW }}  className="col-md-4" >
                                             {this.state.cashoutacc.idaccount}
                                         </div>
-                                        <div style={{   color: this.props.currentUI.ColorPallete.fourthColor,
+                                        <div style={{   color: this.props.currentUI.ColorPallete.secondColor,
                                            fontSize: this.props.currentUI.Font.textFS,
-                                           fontWeight: this.props.currentUI.Font.textFW }} className="col-md-3" >
+                                           fontWeight: this.props.currentUI.Font.textFW }}  className="col-md-3" >
                                             {this.state.cashdate}
                                         </div>
-                                        <div style={{   color: this.props.currentUI.ColorPallete.fourthColor,
+                                        <div style={{   color: this.props.currentUI.ColorPallete.secondColor,
                                            fontSize: this.props.currentUI.Font.textFS,
-                                           fontWeight: this.props.currentUI.Font.textFW }} className="col-md-3" >
+                                           fontWeight: this.props.currentUI.Font.textFW }}  className="col-md-3" >
                                             {"$ " + this.state.cashoutamount}
                                         </div>
                                         <BrowserView>
                                         <div  >
                                             <button onClick={this.cancelcashout.bind(this)} type="button" className="btn btn-danger btn-round ">
-                                                <i className="material-icons">cancel </i>
+                                            <i className="material-icons">cancel </i>
+                                             {this.props.currentUI.Information.showExtraInfo ?   "Cancel" : null}
                                             </button>
                                         </div>
                                         </BrowserView>
                                         <MobileView viewClassName='col-12'>
                                             
-                                            <button onClick={()=>this.props.history.push('/cashoutatm')}   type="button" className="btn btn-primary btn-round col-4">
+                                            <button onClick={()=>this.props.history.push('/cashoutatm')}   type="button" className="btn btn-primary btn-round col-5">
                                             <i className="material-icons">local_atm</i>
+                                            {this.props.currentUI.Information.showExtraInfo ? "ATM" : null }
                                             </button>
-                                            <button onClick={this.cancelcashout.bind(this)} type="button" className="btn btn-danger btn-round col-4">
-                                                <i className="material-icons">cancel </i>
+                                            <button onClick={this.cancelcashout.bind(this)} type="button" className="btn btn-danger btn-round col-6">
+                                            <i className="material-icons">cancel </i>
+                                            {this.props.currentUI.Information.showExtraInfo ? "Cancel" : null}
                                             </button>
                                        
                                         </MobileView>
@@ -300,7 +312,7 @@ class Main extends Component {
                                             color: this.props.currentUI.ColorPallete.firstColor,
                                             fontSize: this.props.currentUI.Font.titleFS,
                                             fontWeight: this.props.currentUI.Font.titleFW
-                                            }}>Accounts</h3>
+                                            }}>{this.props.currentUI.Information.showExtraInfo ?  "This section contains the states of all your accounts" :  "Accounts"  }</h3>
 
                                     <div className="card card-nav-tabs">
                                         <div className="card-header card-header-primary">
@@ -314,7 +326,7 @@ class Main extends Component {
                                                                 fontWeight: this.props.currentUI.Font.headingFW
                                                                 }}  className="nav-link" href="#account1" data-toggle="tab" id="primero">
                                                                 <i className="material-icons">account_balance</i>
-                                                                Main Account
+                                                                {(this.props.currentUI.Information.showExtraInfo && this.props.currentUI.Information.showButtonText) ? "Open main account" : ((!this.props.currentUI.Information.showExtraInfo && this.props.currentUI.Information.showButtonText) ? "Main Account" : null )} 
                                                          <div className="ripple-container"></div></a>
                                                         </li>
                                                         <li className="nav-item">
@@ -324,7 +336,8 @@ class Main extends Component {
                                                                 fontWeight: this.props.currentUI.Font.headingFW
                                                                 }}  className="nav-link" href="#account2" data-toggle="tab">
                                                                 <i className="material-icons">monetization_on</i>
-                                                                Savings Account
+                                                                {(this.props.currentUI.Information.showExtraInfo && this.props.currentUI.Information.showButtonText) ? "Open savings account" : ((!this.props.currentUI.Information.showExtraInfo && this.props.currentUI.Information.showButtonText) ? "Savings Account" : null )} 
+                                                             
                                                         <div className="ripple-container"></div></a>
                                                         </li>
                                                         <li className="nav-item">
@@ -334,7 +347,8 @@ class Main extends Component {
                                                                 fontWeight: this.props.currentUI.Font.headingFW
                                                                 }}  className="nav-link" href="#account3" data-toggle="tab">
                                                                 <i className="material-icons">people</i>
-                                                                Family Account
+                                                                {(this.props.currentUI.Information.showExtraInfo && this.props.currentUI.Information.showButtonText) ? "Open family account" : ((!this.props.currentUI.Information.showExtraInfo && this.props.currentUI.Information.showButtonText) ?   "Family Account" : null )} 
+                                                        
                                                           <div className="ripple-container"></div></a>
 
                                                         </li>
@@ -351,8 +365,15 @@ class Main extends Component {
 
                                 </div>
                             </div>
-                            {prepareCashout
+                           { this.state.cashoutSet ? null :
+                                <h3 style={{
+                                    color: this.props.currentUI.ColorPallete.firstColor,
+                                    fontSize: this.props.currentUI.Font.titleFS,
+                                    fontWeight: this.props.currentUI.Font.titleFW
+                                    }}>{this.props.currentUI.Information.showExtraInfo ?   "Here you can prepare a cashout" : "Prepare cashout" }</h3>
                             }
+                            
+                            {prepareCashout}
                         </div>
                     </div>
                 </div>

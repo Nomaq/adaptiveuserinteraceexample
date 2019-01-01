@@ -9,22 +9,22 @@ let Account = {
         console.log(body);
         serverCall.serverrequest("user/login",body,responseFN);
     },
-    register(username,password,name,impairment,experience,responseFN){
+    register(username,password,name,impairments,experience,responseFN){
         let body = JSON.stringify({
             username: username,
             password: password,
             name: name,
-            impairment: impairment,
+            impairments: impairments,
             experience: experience
         });
         console.log(body);
         serverCall.serverrequest("user/register",body,responseFN);
     },
 
-    updatedata(iduser,impairment,experience,responseFN){
+    updatedata(iduser,impairments,experience,responseFN){
         let body = JSON.stringify({
             iduser: iduser,
-            impairment: impairment,
+            impairments: impairments,
             experience: experience
         });
         console.log(body);

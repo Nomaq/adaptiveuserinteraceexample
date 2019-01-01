@@ -21,7 +21,7 @@ class Settings extends Component {
     }
 
     componentWillMount(){
-        var data = sessionStorage.getItem('userid');
+        var data = localStorage.getItem('userid');
         if(!data){
             this.props.history.push('/');
            
@@ -38,10 +38,11 @@ class Settings extends Component {
         }
         Profile.updatedata(this.state.userid,this.state.impairments, this.state.experience, function(response){
             setTimeout(function () {
-                console.log(response);
+                console.log(context.state.experience);
                 if(response && response ){
-                    sessionStorage.setItem('impairments', context.state.impairments );
-                    sessionStorage.setItem('experience', context.state.experience );
+                    localStorage.setItem('impairments', context.state.impairments );
+                    localStorage.setItem('experience', context.state.experience );
+                    context.props.userSettings(context.state.impairments, context.state.experience);
                     context.setState({ loading: false });
                     context.props.history.push('/main');
 
@@ -64,6 +65,7 @@ class Settings extends Component {
         return (
             <div className="landing-page sidebar-collapse" style={{ backgroundImage: `url(${imageUrl})` }}>
                 <Navbar
+                currentUI = {this.props.currentUI}
                 history = {this.props.history} />
                 <div className="page-header header-filter" data-parallax="true" >
                     <div className="container">
@@ -78,7 +80,6 @@ class Settings extends Component {
                                     <div className="card card-nav-tabs">
                                         <div className="card-header card-header-primary">
                                             <h3 style={{
-                                            color: this.props.currentUI.ColorPallete.fifthColor,
                                             fontSize: this.props.currentUI.Font.titleFS,
                                             fontWeight: this.props.currentUI.Font.headingFW
                                             }}>Settings</h3>
@@ -94,30 +95,56 @@ class Settings extends Component {
                                                                 fontSize: this.props.currentUI.Font.headingFS,
                                                                 fontWeight: this.props.currentUI.Font.headingFW
                                                                 }} htmlFor="inputState">Do you have problems reading small fonts?</label>
-                                                                <select style={{   color: this.props.currentUI.ColorPallete.fourthColor,
-                                           fontSize: this.props.currentUI.Font.textFS,
-                                           fontWeight: this.props.currentUI.Font.textFW }}  onChange={(impairments)=> this.setState({impairments:impairments.target.value})} value={this.state.impairments} id="inputStat" className="form-control">
-                                                                <option selected>Choose...</option>
-                                                                <option>No</option>
-                                                                <option>Yes</option>
+                                                                <select style={{   color: this.props.currentUI.ColorPallete.secondColor,
+                                                                        fontSize: this.props.currentUI.Font.textFS,
+                                                                        fontWeight: this.props.currentUI.Font.textFW }}  
+                                                                         onChange={(impairments)=> this.setState({impairments:impairments.target.value})} value={this.state.impairments} id="inputStat" className="form-control">
+                                                                <option style={{   color: this.props.currentUI.ColorPallete.secondColor,
+                                                                    backgroundColor: this.props.currentUI.ColorPallete.fifthColor,
+                                                                    fontSize: this.props.currentUI.Font.textFS,
+                                                                    fontWeight: this.props.currentUI.Font.textFW }}selected>Choose...</option>
+                                                                <option style={{   color: this.props.currentUI.ColorPallete.secondColor,
+                                                                    backgroundColor: this.props.currentUI.ColorPallete.fifthColor,
+                                                                    fontSize: this.props.currentUI.Font.textFS,
+                                                                    fontWeight: this.props.currentUI.Font.textFW }}>No</option>
+                                                                <option style={{   color: this.props.currentUI.ColorPallete.secondColor,
+                                                                    backgroundColor: this.props.currentUI.ColorPallete.fifthColor,
+                                                                    fontSize: this.props.currentUI.Font.textFS,
+                                                                    fontWeight: this.props.currentUI.Font.textFW }}>Yes</option>
                                                             </select>
                                                             </div>
                                                         </div>
                                                         <div className="form-row">
                                                             <div className="form-group col-md-12">
                                                                 <label style={{
-                                                                color: this.props.currentUI.ColorPallete.firstColor,
-                                                                fontSize: this.props.currentUI.Font.headingFS,
-                                                                fontWeight: this.props.currentUI.Font.headingFW
+                                                                 color: this.props.currentUI.ColorPallete.firstColor,
+                                                                 fontSize: this.props.currentUI.Font.headingFS,
+                                                                 fontWeight: this.props.currentUI.Font.headingFW
                                                                 }}htmlFor="inputState">Do you have experience with other banking systems?</label>
-                                                                <select style={{   color: this.props.currentUI.ColorPallete.fourthColor,
-                                           fontSize: this.props.currentUI.Font.textFS,
-                                           fontWeight: this.props.currentUI.Font.textFW }}  id="inputSta" onChange={(experience)=> this.setState({experience:experience.target.value})} value={this.state.experience} className="form-control">
-                                                                <option value={""} >Choose...</option>
-                                                                <option value={0}>Not at all</option>
-                                                                <option value={1}>A little</option>
-                                                                <option value={2} >I use them sometimes</option>
-                                                                <option value={3}>I use them often</option>
+                                                                <select  style={{   color: this.props.currentUI.ColorPallete.secondColor,
+                                                                        fontSize: this.props.currentUI.Font.textFS,
+                                                                        fontWeight: this.props.currentUI.Font.textFW }}   
+                                                                 id="inputSta" onChange={(experience)=> this.setState({experience:experience.target.value})} value={this.state.experience} className="form-control">
+                                                                <option style={{   color: this.props.currentUI.ColorPallete.secondColor,
+                                                                    backgroundColor: this.props.currentUI.ColorPallete.fifthColor,
+                                                                    fontSize: this.props.currentUI.Font.textFS,
+                                                                    fontWeight: this.props.currentUI.Font.textFW }} value={""} >Choose...</option>
+                                                                <option style={{   color: this.props.currentUI.ColorPallete.secondColor,
+                                                                    backgroundColor: this.props.currentUI.ColorPallete.fifthColor,
+                                                                    fontSize: this.props.currentUI.Font.textFS,
+                                                                    fontWeight: this.props.currentUI.Font.textFW }} value={0}>Not at all</option>
+                                                                <option style={{   color: this.props.currentUI.ColorPallete.secondColor,
+                                                                    backgroundColor: this.props.currentUI.ColorPallete.fifthColor,
+                                                                    fontSize: this.props.currentUI.Font.textFS,
+                                                                    fontWeight: this.props.currentUI.Font.textFW }} value={1}>A little</option>
+                                                                <option style={{   color: this.props.currentUI.ColorPallete.secondColor,
+                                                                    backgroundColor: this.props.currentUI.ColorPallete.fifthColor,
+                                                                    fontSize: this.props.currentUI.Font.textFS,
+                                                                    fontWeight: this.props.currentUI.Font.textFW }} value={2} >I use them sometimes</option>
+                                                                <option style={{   color: this.props.currentUI.ColorPallete.secondColor,
+                                                                    backgroundColor: this.props.currentUI.ColorPallete.fifthColor,
+                                                                    fontSize: this.props.currentUI.Font.textFS,
+                                                                    fontWeight: this.props.currentUI.Font.textFW }} value={3}>I use them often</option>
                                                             </select>
                                                             </div>
                                                         </div>
@@ -144,26 +171,23 @@ class Settings extends Component {
                                                                 color: this.props.currentUI.ColorPallete.firstColor,
                                                                 fontSize: this.props.currentUI.Font.headingFS,
                                                                 fontWeight: this.props.currentUI.Font.headingFW
-                                                                }}  htmlFor="inputPassword4">Confirm Pin</label>
+                                                                }}  htmlFor="inputPassword5">Confirm Pin</label>
                                                                 <input style={{
                                                                 color: this.props.currentUI.ColorPallete.firstColor,
                                                                 fontSize: this.props.currentUI.Font.headingFS,
                                                                 fontWeight: this.props.currentUI.Font.headingFW
-                                                                }}  type="password" className="form-control" id="inputPassword4" placeholder="Password"></input>
+                                                                }}  type="password" className="form-control" id="inputPassword5" placeholder="Password"></input>
                                                             </div>
                                                         </div>
                                                         <button style={{
-                                                                color: this.props.currentUI.ColorPallete.fifthColor,
                                                                 fontSize: this.props.currentUI.Font.headingFS,
                                                                 fontWeight: this.props.currentUI.Font.headingFW
                                                                 }}   onClick={() => this.updatedata()} type="button" className="btn btn-success">Confirm</button>
                                                         <button style={{
-                                                                color: this.props.currentUI.ColorPallete.fifthColor,
                                                                 fontSize: this.props.currentUI.Font.headingFS,
                                                                 fontWeight: this.props.currentUI.Font.headingFW
                                                                 }}   type="button" className="btn btn-warning">Reset</button>
                                                         <button style={{
-                                                                color: this.props.currentUI.ColorPallete.fifthColor,
                                                                 fontSize: this.props.currentUI.Font.headingFS,
                                                                 fontWeight: this.props.currentUI.Font.headingFW
                                                                 }}   onClick={() => window.history.back()} type="button" className="btn btn-danger">Cancel</button>

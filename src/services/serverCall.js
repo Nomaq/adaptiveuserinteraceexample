@@ -1,4 +1,4 @@
-var serverAddress = "http://localhost:3005/";
+var serverAddress = "http://192.168.179.106:3005/";
 const axios = require('axios');
 
 var apiCall = {

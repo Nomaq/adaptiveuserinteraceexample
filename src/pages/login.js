@@ -15,7 +15,7 @@ class Login extends Component {
     }
 
     componentWillMount(){
-        var data = sessionStorage.getItem('userid');
+        var data = localStorage.getItem('userid');
         if(data){
             console.log(data);
             this.props.history.push('/main');
@@ -35,11 +35,20 @@ class Login extends Component {
         Profile.login(this.state.username, this.state.password, function(response){
             setTimeout(function () {
                 if(response && response[0] && response[0].username == context.state.username ){
-                    sessionStorage.setItem('userid', response[0].iduser );
-                    sessionStorage.setItem('impairments', response[0].impairments );
-                    sessionStorage.setItem('experience', response[0].experience );
+                    localStorage.setItem('userid', response[0].iduser );
+                    localStorage.setItem('impairments', response[0].impairments );
+                    localStorage.setItem('experience', response[0].experience );
+                    context.props.userSettings(response[0].impairments, response[0].experience);
+
                     context.setState({ loading: false });
-                    context.props.history.push('/main');
+                    
+                    if(response[0].username=="atm"){
+                        context.props.history.push('/atm');
+                    } else {
+                        context.props.history.push('/main');
+
+                    }
+                    
 
                 } else {
                     context.setState({ loading: false });
@@ -64,13 +73,12 @@ class Login extends Component {
             <form className="login100-form validate-form">
 
 
-                <span style={{color: this.props.currentUI.ColorPallete.fifthColor}} className="login100-form-title p-b-34 p-t-27">
+                <span className="login100-form-title p-b-34 p-t-27">
                     Log in
             </span>
 
                 <div className="wrap-input100 validate-input" data-validate="Enter username">
                     <input onChange={(username)=> this.setState({username:username.target.value})}  value={this.state.username} style={{
-                                                                    color: this.props.currentUI.ColorPallete.fifthColor,
                                                                     fontSize: this.props.currentUI.Font.headingFS,
                                                                     fontWeight: this.props.currentUI.Font.headingFW }}
                                                                      className="input100" type="text" name="username" placeholder="Username"></input>
@@ -79,7 +87,6 @@ class Login extends Component {
 
                 <div className="wrap-input100 validate-input" data-validate="Enter password">
                     <input onChange={(password)=> this.setState({password:password.target.value})}  value={this.state.password} style={{
-                                                                    color: this.props.currentUI.ColorPallete.fifthColor,
                                                                     fontSize: this.props.currentUI.Font.headingFS,
                                                                     fontWeight: this.props.currentUI.Font.headingFW }} className="input100" type="password" name="pass" placeholder="Password"></input>
                     <span className="focus-input100" data-placeholder="&#xf191;"></span>
@@ -96,7 +103,6 @@ class Login extends Component {
 
                 <div className="text-center p-t-20">
                     <a style={{
-                    color: this.props.currentUI.ColorPallete.fifthColor,
                     fontSize: this.props.currentUI.Font.headingFS,
                     fontWeight: this.props.currentUI.Font.headingFW }} className="txt1" href="#">
                         Forgot Password?
@@ -104,7 +110,6 @@ class Login extends Component {
                 </div>
                 <div className="text-center p-t-20">
                     <a style={{
-                    color: this.props.currentUI.ColorPallete.fifthColor,
                     fontSize: this.props.currentUI.Font.headingFS,
                     fontWeight: this.props.currentUI.Font.headingFW }} onClick={()=> this.props.history.push('/register')}className="txt1" href="#">
                        Register

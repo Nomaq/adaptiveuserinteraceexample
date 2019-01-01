@@ -76,7 +76,7 @@ select#inputState2 {
   background: linear-gradient(top, #ffbf06,#b39f53);
 }
 
-.happy.wrap-login100 {
+.happy .wrap-login100 {
   width: 500px;
   border-radius: 10px;
   overflow: hidden;
@@ -121,7 +121,7 @@ select#inputState2 {
   background: linear-gradient(top, #4596d2,#1f53a2);
 }
 
-.sad.wrap-login100 {
+.sad .wrap-login100 {
   width: 500px;
   border-radius: 10px;
   overflow: hidden;
@@ -156,4 +156,62 @@ select#inputState2 {
 
 #root{
   font-family: "Poppins-Regular" !important;
+}
+
+.white .container-login100::before {
+  background-color: rgba(255,255,255,0.9);
+}
+
+.black .container-login100::before {
+  background-color: rgba(0,0,0,0.9);
+}
+
+.white .landing-page::before {
+  background-color: rgba(255,255,255,0.9);
+}
+
+.black .landing-page::before {
+  background-color: rgba(0,0,0,0.9);
+}
+
+.white .main {
+  background: #FFF;
+
+}
+
+.black .main {
+  background: #5a5959;
+ 
+}
+
+.black .card {
+  
+  color: rgba(255,255,255,.87);
+  background: #777;
+
+}
+
+.white .card {
+  color: "black";
+  background: #FFF;
+
+}
+
+.form-control:disabled, .form-control[readonly] {
+  background-color: transparent;
+  opacity: 1;
+}
+
+.white #inputstate option{
+  background: #FFF; 
+  color: #000
+}
+
+.black #inputstate select option{
+  background-color: #000 ;
+  color: #fff
+}
+
+.btn {
+  white-space: normal;
 }

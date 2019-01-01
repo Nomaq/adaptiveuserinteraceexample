@@ -16,7 +16,7 @@ class Login extends Component {
     }
 
     componentWillMount(){
-        var data = sessionStorage.getItem('userid');
+        var data = localStorage.getItem('userid');
         if(!data){
             this.props.history.push('/');
            

@@ -60,13 +60,26 @@ class QuickCashout extends Component {
     render() {
         let loading = "Loading ...";
         if(this.props.accountdata[0]){
-            loading = <select style={{   color: this.props.currentUI.ColorPallete.fourthColor,
+            loading = <select style={{   color: this.props.currentUI.ColorPallete.secondColor,
                 fontSize: this.props.currentUI.Font.textFS,
                 fontWeight: this.props.currentUI.Font.textFW }}  onChange={this.handleChange.bind(this)} value={this.state.account} id="inputState" className="form-control">
-            <option  value= {""} selected>Choose...</option>
-            <option  value={this.props.accountdata[0].idaccount}>{"Main account (Current: $" + this.props.accountdata[0].total  + ")" }</option>
-            <option  value={this.props.accountdata[1].idaccount}>{"Savings account (Current: $" + this.props.accountdata[1].total  + ")" }</option>
-            <option  value={this.props.accountdata[2].idaccount}>{"Family account (Current: $" + this.props.accountdata[2].total  + ")" }</option>
+            <option style={{   
+                backgroundColor: this.props.currentUI.ColorPallete.fifthColor,
+                color: this.props.currentUI.ColorPallete.secondColor,
+                fontSize: this.props.currentUI.Font.textFS,
+                fontWeight: this.props.currentUI.Font.textFW }} value= {""} selected>{this.props.currentUI.Information.showExtraInfo ? "Click here to select an account" :  "Choose..."}</option>
+            <option style={{   color: this.props.currentUI.ColorPallete.secondColor,
+                backgroundColor: this.props.currentUI.ColorPallete.fifthColor,
+                fontSize: this.props.currentUI.Font.textFS,
+                fontWeight: this.props.currentUI.Font.textFW }} value={this.props.accountdata[0].idaccount}>{"Main account (Current: $" + this.props.accountdata[0].total  + ")" }</option>
+            <option style={{   color: this.props.currentUI.ColorPallete.secondColor,
+                backgroundColor: this.props.currentUI.ColorPallete.fifthColor,
+                fontSize: this.props.currentUI.Font.textFS,
+                fontWeight: this.props.currentUI.Font.textFW }} value={this.props.accountdata[1].idaccount}>{"Savings account (Current: $" + this.props.accountdata[1].total  + ")" }</option>
+            <option style={{   color: this.props.currentUI.ColorPallete.secondColor,
+               backgroundColor: this.props.currentUI.ColorPallete.fifthColor,
+               fontSize: this.props.currentUI.Font.textFS,
+               fontWeight: this.props.currentUI.Font.textFW }} value={this.props.accountdata[2].idaccount}>{"Family account (Current: $" + this.props.accountdata[2].total  + ")" }</option>
         </select>;
         }
 
@@ -86,11 +99,11 @@ class QuickCashout extends Component {
                                             color: this.props.currentUI.ColorPallete.firstColor,
                                             fontSize: this.props.currentUI.Font.headingFS,
                                             fontWeight: this.props.currentUI.Font.headingFW
-                                            }} htmlFor="inputState">Choose one</label>
-                    <button onClick={() => this.setState({value:50}) } type="button" className="btn btn-primary btn-round">50</button>
-                    <button onClick={() => this.setState({value:100}) } type="button" className="btn btn-primary btn-round">100</button>
-                    <button onClick={() => this.setState({value:200}) } type="button" className="btn btn-primary btn-round">200</button>
-                    <button onClick={() => this.setState({value:500}) } type="button" className="btn btn-primary btn-round">500</button>
+                                            }} htmlFor="inputState">{this.props.currentUI.Information.showExtraInfo ? "Choose an amount to withdraw" :  "Choose"}</label>
+                    <button onClick={() => this.setState({value:50}) } type="button" className="btn btn-primary btn-round">€ 50</button>
+                    <button onClick={() => this.setState({value:100}) } type="button" className="btn btn-primary btn-round">€ 100</button>
+                    <button onClick={() => this.setState({value:200}) } type="button" className="btn btn-primary btn-round">€ 200</button>
+                    <button onClick={() => this.setState({value:500}) } type="button" className="btn btn-primary btn-round">€ 500</button>
                 </div>
             </div>
             <div className="form-row">
@@ -100,18 +113,23 @@ class QuickCashout extends Component {
                                             fontSize: this.props.currentUI.Font.headingFS,
                                             fontWeight: this.props.currentUI.Font.headingFW
                                             }} htmlFor="inputAddress">Amount $</label>
-                    <input disabled={true} value={this.state.value} onChange={(value) => {(!isNaN(value) ? this.setState({value}) : this.setState({value:0}))} } type="number" className="form-control " id="total" placeholder="0"></input>
+                    <input style={{
+                                            color: this.props.currentUI.ColorPallete.secondColor,
+                                            fontSize: this.props.currentUI.Font.headingFS,
+                                            fontWeight: this.props.currentUI.Font.headingFW
+                                            }} 
+                                             disabled={true} value={this.state.value} onChange={(value) => {(!isNaN(value) ? this.setState({value}) : this.setState({value:0}))} } type="number" className="form-control " id="total" placeholder="0"></input>
                 </div>
                 <div className="col-md-1"></div>
                 <button  style={{
                                                                 fontSize: this.props.currentUI.Font.headingFS,
                                                                 fontWeight: this.props.currentUI.Font.headingFW
-                                                                }}  onClick={this.confirm.bind(this)} type="button" className="btn btn-success btn-round col-md-2">Confirm Entry</button>
+                                                                }}  onClick={this.confirm.bind(this)} type="button" className="btn btn-success btn-round col-md-2">Confirm</button>
                 <div className="col-md-1"></div>
                 <button  style={{
                                                                 fontSize: this.props.currentUI.Font.headingFS,
                                                                 fontWeight: this.props.currentUI.Font.headingFW
-                                                                }}  type="button" onClick={ () => this.props.gotoCOTab( "denominate")} className="btn btn-info btn-round col-md-4">Denominate other amount</button>
+                                                                }}  type="button" onClick={ () => this.props.gotoCOTab( "denominate")} className="btn btn-info btn-round col-md-4">{this.props.currentUI.Information.showExtraInfo ? "Select custom bill denomination" :  "Denominate other amount"}</button>
             </div>
         </form>
         );

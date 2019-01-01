@@ -9,7 +9,6 @@ var nools = require("nools");
 
 var currentUI = {
    Background : ComponentAdaptations.Background.neutral,
-   NavBar: ComponentAdaptations.NavBar.normal,
    ColorPallete: ComponentAdaptations.ColorPallete.normal,
    Navigation: ComponentAdaptations.Navigation.normal,
    Information: ComponentAdaptations.Information.normal,
@@ -26,6 +25,15 @@ var Rules = {
     rule3:{
         activated:false
     },
+    rule4:{
+
+    },
+    rule5:{
+
+    },
+    rule6:{
+
+    },
     rule13:{
         activated:false
     },
@@ -36,6 +44,12 @@ var Rules = {
         activated:false
     },
     rule16:{
+        activated:false
+    },
+    rule10:{
+        activated:false
+    },
+    rule11:{
         activated:false
     },
 }
@@ -53,15 +67,13 @@ var RuleEngine = {
             nools.flow("MainFlow", function (flow) {
                 //User Rules
                 flow.rule("Rule1: User happy", { salience: 9 }, [User, "m", "m.mood == 0"], function (facts) {
-                    console.log("good");
                     currentUI.Background = ComponentAdaptations.Background.happy; 
                     Rules.rule1.activated = true ;
                     $( "#root" ).addClass( "happy" );
                 });
 
                 flow.rule("Rule2: User Neutral", { salience: 9 }, [User, "m", "m.mood == 2"], function (facts) {
-                    
-                    console.log("neutral");
+           
                      currentUI.Background =ComponentAdaptations.Background.neutral;
                      Rules.rule2.activated = true ;
                      $( "#root" ).removeClass( "happy" );
@@ -71,42 +83,96 @@ var RuleEngine = {
 
                 flow.rule("Rule3: User Bad mood", { salience: 9 }, [User, "m", "m.mood == 1 || m.mood == 3"], function (facts) {
                     
-                    console.log("down");
                     currentUI.Background =ComponentAdaptations.Background.sad;
                     Rules.rule3.activated = true ;
                     $( "#root" ).addClass( "sad" );
         
                 });
 
-                flow.rule("Rule 13 : Impaired vision", { salience: 10 }, [User, "m", "m.reducedvision == true"], function (facts) {
-                    console.log(13);
-                    //console.log("Older User");
-                    global.currentUI.Font = ComponentAdaptations.Font.bigger;
+                flow.rule("Rule4: Minimal", { salience: 10 }, [User, "m", "m.usagetime > 1000 && m.experience >= 2 "], function (facts) {
+                   
+
+                    currentUI.Information = ComponentAdaptations.Information.minimized;
+                    Rules.rule4.activated = true;
+
+
+                    Rules.rule5.activated = false;
+                    Rules.rule6.activated = false;
+
+                   
+                });
+
+                flow.rule("Rule5: Minimized Information", { salience: 10 }, [User, "m", "m.usagetime > 1000 && m.experience < 2 "], function (facts) {
+               
+                    currentUI.Information = ComponentAdaptations.Information.normal;
+                    Rules.rule5.activated = true;
+
+                    Rules.rule4.activated = false;
+                    Rules.rule6.activated = false;
+
+                   
+                });
+
+                flow.rule("Rule6: Maximized information ", { salience: 10 }, [User, "m", "m.usagetime < 1000 && m.experience < 2 "], function (facts) {
+                
+                    currentUI.Information = ComponentAdaptations.Information.maximized;
+                    Rules.rule6.activated = true;
+                    Rules.rule5.activated = false;
+                    Rules.rule4.activated = false;
+
+
+                   
+                });
+
+                flow.rule("Rule 13 : Impaired vision", { salience: 10 }, [User, "m", "m.impairments == 'Yes'"], function (facts) {
+                    currentUI.Font = ComponentAdaptations.Font.bigger;
                     Rules.rule13.activated = true;
+                });
+                flow.rule("Deactivate Rule 13 : Impaired vision", { salience: 10 }, [User, "m", "m.impairments == 'No'"], function (facts) {
+
+                    Rules.rule13.activated = false;
                 });
 
                 flow.rule("Rule14 : Middle aged user", { salience: 3 }, [User, "m", "m.age >= 45 &&  m.age <= 60"], function (facts) {
-                    console.log(14);
-                    //console.log("Older User");
-                    global.currentUI.Font = ComponentAdaptations.Font.big;
-                    Rules.rule14.activated = true;
-                });
-
-                flow.rule("Rule15 : Older User", { salience: 10 }, [User, "m", "m.age > 60 && m.experience !== 'high'"], function (facts) {
-                    console.log(15);
-                    //console.log("Older User");
-                    global.currentUI.Font = ComponentAdaptations.Font.bigger;
-                    Rules.rule15.activated = true;
-
-                });
-
-                this.rule("Rule16: Younger User", { salience: 10 }, [User, "m", "m.age < 45 && !(m.experience == 'low' || m.experience == 'none')"], function (facts) { 
                     if(!Rules.rule13){
 
-                        global.currentUI.Font = ComponentAdaptations.Font.normal;
+                    currentUI.Font = ComponentAdaptations.Font.big;
+                    Rules.rule14.activated = true;
+                    }
+                });
+
+                flow.rule("Rule15 : Older User", { salience: 10 }, [User, "m", "m.age > 60"], function (facts) {
+                    //console.log("Older User");
+                    if(!Rules.rule13){
+
+                    currentUI.Font = ComponentAdaptations.Font.bigger;
+                    Rules.rule15.activated = true;
+                    }
+
+                });
+
+                flow.rule("Rule16: Younger User", { salience: 10 }, [User, "m", "m.age < 45"], function (facts) { 
+                    if(!Rules.rule13){
+
+                        currentUI.Font = ComponentAdaptations.Font.normal;
                         Rules.rule16.activated = true ;
                         
                     }
+                });
+                this.rule("Rule10: Day", { salience: 8 }, [Context, "m", "m.time && (m.time > 5 && m.time < 20)"], function (facts) {
+                    currentUI.ColorPallete = ComponentAdaptations.ColorPallete.normal;
+                    Rules.rule10.activated = true;
+                    $( "#root" ).addClass( "white" );
+                    $( "#root" ).removeClass( "black" );
+
+               });
+
+                this.rule("Rule11: Night", { salience: 11 }, [Context, "m", "m.time && (m.time <= 5 || m.time >= 20)"], function (facts) {
+                    currentUI.ColorPallete = ComponentAdaptations.ColorPallete.inverted;
+                    Rules.rule11.activated = true;
+                    $( "#root" ).addClass( "black" );
+                    $( "#root" ).removeClass( "white" );
+
                 });
 
                 
@@ -119,17 +185,9 @@ var RuleEngine = {
         var flow = nools.getFlow("MainFlow");
         var session = flow.getSession();
         //assert your different messages
-        if (!this.user) {
-            this.user = new User(userchange);
-        } else {
-            let keys = Object.keys(this.user);
-            for (var i = 0; i < keys.length; i++) {
-                if (this.user[keys[i]] != userchange[keys[i]]) {
-                    this.user[keys[i]] = userchange[keys[i]];
-                }
-            }
-        }
-        session.assert(this.user);
+        
+        let user = new User(userchange);
+        session.assert(user);
         session.match().then(
             function (result) {
                enableadaptation(currentUI);
@@ -139,7 +197,27 @@ var RuleEngine = {
                 console.error(err.stack);
             });
             
-    }
+    },
+    contextChange: function (contextchange, enableadaptation) {
+        // //console.log(contextchange);
+ 
+         let flow = nools.getFlow("MainFlow");
+         let session = flow.getSession();
+         //assert your different messages
+         let env = new Context(contextchange);
+    
+         session.assert(env);
+         session.match().then(
+             function (result) {
+                 enableadaptation(currentUI);
+             },
+             function (err) {
+                 //uh oh an error occurred
+                 console.error(err.stack);
+             });
+ 
+ 
+     },
 }
 
 export default RuleEngine;
